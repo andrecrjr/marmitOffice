@@ -12,7 +12,7 @@ const LoginPage = ({navigation}) => {
   const signIn = async (data) => {
     try {
       await auth().signInWithEmailAndPassword(data.email, data.password);
-      navigation.push('User');
+      navigation.navigate('User');
     } catch (error) {
       console.log(error);
     }

@@ -11,8 +11,9 @@ import {useAuthFirebase} from 'components/hooks/useAuth';
 const AuthStack = createStackNavigator();
 const UserStack = createDrawerNavigator();
 
-export default function App() {
+export default function App(props) {
   const {authenticated} = useAuthFirebase();
+
   return (
     <NavigationContainer>
       <AuthStack.Navigator
@@ -44,6 +45,11 @@ const UserPages = () => {
         headerShown: false,
       }}>
       <UserStack.Screen name="Profile" component={Authenticated} />
+      <UserStack.Screen
+        name="Logout"
+        component={StartScreenApp}
+        initialParams={{logout: true}}
+      />
     </UserStack.Navigator>
   );
 };
