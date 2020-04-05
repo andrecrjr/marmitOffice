@@ -1,23 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text} from 'react-native';
 import Layout from 'components/Layout';
+import {useAuthFirebase} from 'components/hooks/useAuth';
 import auth from '@react-native-firebase/auth';
 
 const Authenticated = () => {
-  const [user, setUser] = useState();
-
-  const authState = (userData) => {
-    console.log('estou aqui');
-
-    setUser(userData);
-  };
-  useEffect(() => {
-    const subscribedUser = auth().onAuthStateChanged(authState);
-    return subscribedUser;
-  }, []);
+  const {user} = useAuthFirebase();
   return (
     <Layout>
-      <Text>User authenticated </Text>
+      <Text>User authenticate {user ? user.email : ''}</Text>
     </Layout>
   );
 };

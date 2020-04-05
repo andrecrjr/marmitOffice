@@ -11,13 +11,8 @@ const LoginPage = ({navigation}) => {
 
   const signIn = async (data) => {
     try {
-      const userData = await auth().signInWithEmailAndPassword(
-        data.email,
-        data.password,
-      );
-      console.log(userData);
-      navigation.push('Authenticated');
-      return data;
+      await auth().signInWithEmailAndPassword(data.email, data.password);
+      navigation.push('User');
     } catch (error) {
       console.log(error);
     }
