@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "948875618484",
+    "firebase_url": "https://marmitoffice.firebaseio.com",
+    "project_id": "marmitoffice",
+    "storage_bucket": "marmitoffice.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:948875618484:android:9058725e9c860400c54fe1",
+        "android_client_info": {
+          "package_name": "com.marmitofficeapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "948875618484-s3bmvmbh6t2bh8vg514pktdbdk1u59rr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCg2uMdjvtZeLRQ1jBCnkXMeY8-UZsM_5Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "948875618484-s3bmvmbh6t2bh8vg514pktdbdk1u59rr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
