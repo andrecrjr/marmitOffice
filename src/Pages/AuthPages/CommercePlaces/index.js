@@ -9,14 +9,33 @@ import {
 } from 'geofirestore';
 import firestore from '@react-native-firebase/firestore';
 
+const geofirestore = new GeoFirestore(firestore());
+
 const CommercePlaces = () => {
+  const [rest, setRest] = React.useState([]);
+  const createMarmiteiro = () => {
+    try {
+      const geocollection = geofirestore.collection('marmiteiros');
+      geocollection
+        .add({
+          restaurante: 'recreio manoel',
+          coordinates: new firestore.GeoPoint(-23.0239331, -43.4817407),
+        })
+        .then(() => {
+          console.log('marmiteiro added!');
+        });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const editMarmiteiro = async () => {
+    const users = await firestore().collection('marmiteiros').doc(rest[0]);
+    const user = await users.update({'d.restaurante': 'brejo fundo'});
+    console.log(user);
+  };
   const nearbyLocations = () => {
     try {
-      // Create a Firestore reference
-
-      // Create a GeoFirestore reference
-      const geofirestore = new GeoFirestore(firestore());
-
       // Create a GeoCollection reference
       const geocollection = geofirestore.collection('marmiteiros');
 
@@ -28,23 +47,33 @@ const CommercePlaces = () => {
 
       // Get query (as Promise)
       query.get().then((value) => {
-        console.log(value);
-        console.log(value.docs); // All docs returned by GeoQuery
+        setRest(value.docs.map(({id}) => id));
       });
     } catch (error) {
       console.log(error);
     }
   };
 
+  const fetchUsers = React.useCallback(() => {
+    const fetchuser = async () => {
+      try {
+        const users = await firestore().collection('marmiteiros').doc(rest[0]);
+        const user = await users.get();
+        console.log(user.data());
+      } catch (e) {
+        console.warn(e);
+      }
+    };
+    fetchuser();
+  }, [rest]);
+
   React.useEffect(() => {
     nearbyLocations();
-  }, []);
-  const fetchme = async () => {
-    const users = await (
-      await firestore().collection('marmiteiros').get()
-    ).docs('location');
-    console.log(users);
-  };
+    //editMarmiteiro();
+    fetchUsers();
+    () => console.log('done');
+  }, [fetchUsers, rest]);
+
   return (
     <Layout>
       <Text>Location here</Text>
