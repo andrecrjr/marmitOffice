@@ -13,13 +13,17 @@ const geofirestore = new GeoFirestore(firestore());
 
 const CommercePlaces = () => {
   const [rest, setRest] = React.useState([]);
-  const createMarmiteiro = () => {
+  const [place, setPlaces] = React.useState([]);
+  const mounted = React.useRef();
+  const createMarmiteiro = (data) => {
     try {
       const geocollection = geofirestore.collection('marmiteiros');
       geocollection
         .add({
-          restaurante: 'recreio manoel',
-          coordinates: new firestore.GeoPoint(-23.0239331, -43.4817407),
+          restaurante: 'recreio shopping',
+          cpf: 1215455641,
+          cnpj: 1515465284,
+          coordinates: new firestore.GeoPoint(-23.0195, -43.4869),
         })
         .then(() => {
           console.log('marmiteiro added!');
@@ -32,7 +36,6 @@ const CommercePlaces = () => {
   const editMarmiteiro = async () => {
     const users = await firestore().collection('marmiteiros').doc(rest[0]);
     const user = await users.update({'d.restaurante': 'brejo fundo'});
-    console.log(user);
   };
   const nearbyLocations = () => {
     try {
@@ -42,12 +45,12 @@ const CommercePlaces = () => {
       // Create a GeoQuery based on a location
       const query = geocollection.near({
         center: new firestore.GeoPoint(-23.0239331, -43.4817407),
-        radius: 1000,
+        radius: 2,
       });
 
       // Get query (as Promise)
       query.get().then((value) => {
-        setRest(value.docs.map(({id}) => id));
+        setRest(value.docs);
       });
     } catch (error) {
       console.log(error);
@@ -59,7 +62,7 @@ const CommercePlaces = () => {
       try {
         const users = await firestore().collection('marmiteiros').doc(rest[0]);
         const user = await users.get();
-        console.log(user.data());
+        setPlaces((prevState) => [...prevState, user.data()]);
       } catch (e) {
         console.warn(e);
       }
@@ -68,10 +71,16 @@ const CommercePlaces = () => {
   }, [rest]);
 
   React.useEffect(() => {
+    //createMarmiteiro();
+
     nearbyLocations();
-    //editMarmiteiro();
-    fetchUsers();
-    () => console.log('done');
+    //fetchUsers();
+    console.log(rest);
+    if (!mounted.current) {
+      mounted.current = true;
+    } else {
+      // console.log(place);
+    }
   }, [fetchUsers, rest]);
 
   return (
@@ -82,3 +91,11 @@ const CommercePlaces = () => {
 };
 
 export default CommercePlaces;
+
+const PlaceCommerce = () => {
+  return (
+    <View>
+      <Text>{}</Text>
+    </View>
+  );
+};

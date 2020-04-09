@@ -2,11 +2,11 @@ import React from 'react';
 import DefaultView from '../DefaultView';
 import Header from '../Header';
 
-export default function Layout(props) {
+export default function Layout({children, firstScreen}) {
   return (
     <DefaultView>
-      <Header />
-      {props.children}
+      {!firstScreen ? <Header /> : null}
+      {children}
     </DefaultView>
   );
 }

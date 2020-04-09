@@ -4,17 +4,6 @@ import {Text, StyleSheet, View, Alert} from 'react-native';
 import Swiper from 'components/LoginSwipe';
 import auth from '@react-native-firebase/auth';
 
-const styled = StyleSheet.create({
-  principal: {
-    backgroundColor: 'black',
-    flex: 1,
-  },
-  container: {
-    flex: 1,
-    backgroundColor: 'black',
-  },
-});
-
 export default function StartScreenApp({navigation, route}) {
   const logout = async () => {
     try {
@@ -30,11 +19,21 @@ export default function StartScreenApp({navigation, route}) {
     }
   }, [route]);
   return (
-    <Layout>
-      <View style={styled.principal}>
-        <Text>Chega de filas!</Text>
+    <Layout firstScreen={true}>
+      <View style={styled.container}>
+        <Text style={styled.logoMain}>MarmitOffice</Text>
+        <Text style={styled.sloganMain}>
+          Pedir quentinha nunca foi tão fácil!
+        </Text>
       </View>
       <Swiper navigation={navigation} />
     </Layout>
   );
 }
+
+const styled = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#DF3030',
+  },
+});
