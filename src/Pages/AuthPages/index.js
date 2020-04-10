@@ -4,6 +4,7 @@ import Authenticated from './UserAuth';
 import CommercePlaces from './CommercePlaces';
 import StartScreenApp from '../StartIndex';
 import HeaderDrawer from 'components/Header/customDraw';
+import AnimatedTest from './AnimationPlace';
 
 const UserStack = createDrawerNavigator();
 
@@ -20,6 +21,7 @@ const UserPages = () => {
         name="Marmiteiros próximos"
         component={CommercePlaces}
       />
+      <UserStack.Screen name="teste animation" component={AnimatedTest} />
       <UserStack.Screen
         name="Logout"
         component={StartScreenApp}

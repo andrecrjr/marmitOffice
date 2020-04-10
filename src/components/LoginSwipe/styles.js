@@ -8,7 +8,7 @@ export const styleSwipe = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     height: 50,
-    backgroundColor: '#cc7000',
+    backgroundColor: 'white',
     marginBottom: 25,
   },
   startUpButton: {
@@ -28,12 +28,13 @@ export const swiperContainer = StyleSheet.create({
     height: 45,
     borderRadius: 15,
     width: Dimensions.get('screen').width / 1.2,
-    backgroundColor: '#cc7000',
+    backgroundColor: '#D50000',
     flex: 1,
   },
   buttonText: {
-    fontSize: 18,
+    fontSize: 16,
     textAlign: 'center',
     paddingTop: 10,
+    color: 'white',
   },
 });

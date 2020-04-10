@@ -50,7 +50,7 @@ const CommercePlaces = () => {
 
       // Get query (as Promise)
       query.get().then((value) => {
-        setRest(value.docs);
+        console.log(value.docs);
       });
     } catch (error) {
       console.log(error);
