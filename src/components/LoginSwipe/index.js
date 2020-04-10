@@ -1,10 +1,10 @@
 import React from 'react';
-import {View, Text, Dimensions} from 'react-native';
+import { View, Text, Dimensions } from 'react-native';
 import SwipeablePanel from 'components/Swipeable';
 import ButtonView from 'components/Button';
-import {styleSwipe, swiperContainer} from './styles';
+import { styleSwipe, swiperContainer } from './styles';
 
-export default function Swiper({navigation}) {
+export default function Swiper({ navigation }) {
   const [controlLogin, setControl] = React.useState(false);
 
   const closePanel = () => {
@@ -28,7 +28,7 @@ export default function Swiper({navigation}) {
         onClose={closePanel}
         closeOnTouchOutside={true}
         onlySmall={true}
-        style={{height: Dimensions.get('screen').height / 1.4}}>
+        style={{ height: Dimensions.get('screen').height / 1.4 }}>
         <View>
           <View style={swiperContainer.containerButton}>
             <ButtonView
@@ -37,10 +37,10 @@ export default function Swiper({navigation}) {
               Login!
             </ButtonView>
           </View>
-          <Text style={{paddingTop: 15, textAlign: 'center'}}>
+          <Text style={{ paddingTop: 15, textAlign: 'center' }}>
             Ainda não tem conta !?
           </Text>
-          <View style={[swiperContainer.containerButton, {marginTop: 0}]}>
+          <View style={[swiperContainer.containerButton, { marginTop: 0 }]}>
             <ButtonView
               textStyle={swiperContainer.buttonText}
               onPressFn={() => navigation.push('Signup')}>

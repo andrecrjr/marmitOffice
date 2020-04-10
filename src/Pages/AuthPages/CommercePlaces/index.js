@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from 'components/Layout';
-import {View, Text} from 'react-native';
+import { View, Text } from 'react-native';
 import {
   GeoCollectionReference,
   GeoFirestore,
@@ -12,17 +12,15 @@ import firestore from '@react-native-firebase/firestore';
 const geofirestore = new GeoFirestore(firestore());
 
 const CommercePlaces = () => {
-  const [rest, setRest] = React.useState([]);
-  const [place, setPlaces] = React.useState([]);
-  const mounted = React.useRef();
+  const [rest, setRestaurants] = useState([]);
   const createMarmiteiro = (data) => {
     try {
       const geocollection = geofirestore.collection('marmiteiros');
       geocollection
         .add({
-          restaurante: 'recreio shopping',
-          cpf: 1215455641,
-          cnpj: 1515465284,
+          restaurante: 'recreio shopping burguer king',
+          cpf: 6666666,
+          cnpj: 899998777,
           coordinates: new firestore.GeoPoint(-23.0195, -43.4869),
         })
         .then(() => {
@@ -35,9 +33,10 @@ const CommercePlaces = () => {
 
   const editMarmiteiro = async () => {
     const users = await firestore().collection('marmiteiros').doc(rest[0]);
-    const user = await users.update({'d.restaurante': 'brejo fundo'});
+    const user = await users.update({ 'd.restaurante': 'brejo fundo' });
   };
-  const nearbyLocations = () => {
+
+  const listNearbyLocations = async () => {
     try {
       // Create a GeoCollection reference
       const geocollection = geofirestore.collection('marmiteiros');
@@ -47,41 +46,22 @@ const CommercePlaces = () => {
         center: new firestore.GeoPoint(-23.0239331, -43.4817407),
         radius: 2,
       });
-
-      // Get query (as Promise)
-      query.get().then((value) => {
-        console.log(value.docs);
-      });
+      const restaurants = await query.get();
+      console.log(restaurants.docs);
+      setRestaurants(
+        restaurants.docs.map((location) => {
+          return { ...location.data(), ...{ distance: location.distance } };
+        }),
+      );
     } catch (error) {
       console.log(error);
     }
   };
 
-  const fetchUsers = React.useCallback(() => {
-    const fetchuser = async () => {
-      try {
-        const users = await firestore().collection('marmiteiros').doc(rest[0]);
-        const user = await users.get();
-        setPlaces((prevState) => [...prevState, user.data()]);
-      } catch (e) {
-        console.warn(e);
-      }
-    };
-    fetchuser();
-  }, [rest]);
-
   React.useEffect(() => {
     //createMarmiteiro();
-
-    nearbyLocations();
-    //fetchUsers();
-    console.log(rest);
-    if (!mounted.current) {
-      mounted.current = true;
-    } else {
-      // console.log(place);
-    }
-  }, [fetchUsers, rest]);
+    listNearbyLocations();
+  }, []);
 
   return (
     <Layout>
