@@ -1,13 +1,13 @@
-import React, {useEffect} from 'react';
-import {View, Text, Alert} from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Text, Alert } from 'react-native';
 import Layout from 'components/Layout';
-import {useForm} from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import FormInput from 'components/Input';
 import ButtonView from 'components/Button';
 import auth from '@react-native-firebase/auth';
 
-const LoginPage = ({navigation}) => {
-  const {register, handleSubmit, errors, setValue} = useForm();
+const LoginPage = ({ navigation }) => {
+  const { register, handleSubmit, errors, setValue } = useForm();
 
   const signIn = async (data) => {
     try {
@@ -41,7 +41,7 @@ const LoginPage = ({navigation}) => {
           onChangeText={(text) => setValue('password', text)}
         />
         <ButtonView
-          textStyle={{color: 'black'}}
+          textStyle={{ color: 'black' }}
           onPressFn={handleSubmit(submitLogin)}>
           Login
         </ButtonView>

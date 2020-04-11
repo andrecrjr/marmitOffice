@@ -32,40 +32,59 @@ const CommercePlaces = () => {
   };
 
   const editMarmiteiro = async () => {
-    const users = await firestore().collection('marmiteiros').doc(rest[0]);
-    const user = await users.update({ 'd.restaurante': 'brejo fundo' });
+    const users = await firestore()
+      .collection('marmiteiros')
+      .doc('Id7xNVEdxSLgsK8KwofK');
+    const user = await users.update({
+      'd.restaurante': 'dona bente do recreio',
+    });
+    console.log(user);
   };
 
-  const listNearbyLocations = async () => {
-    try {
-      // Create a GeoCollection reference
-      const geocollection = geofirestore.collection('marmiteiros');
+  const callNearby = React.useCallback(() => {
+    const listNearbyLocations = async () => {
+      try {
+        // Create a GeoCollection reference
+        const geocollection = geofirestore.collection('marmiteiros');
 
-      // Create a GeoQuery based on a location
-      const query = geocollection.near({
-        center: new firestore.GeoPoint(-23.0239331, -43.4817407),
-        radius: 2,
-      });
-      const restaurants = await query.get();
-      console.log(restaurants.docs);
-      setRestaurants(
-        restaurants.docs.map((location) => {
-          return { ...location.data(), ...{ distance: location.distance } };
-        }),
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  React.useEffect(() => {
-    //createMarmiteiro();
+        // Create a GeoQuery based on a location
+        const query = geocollection.near({
+          center: new firestore.GeoPoint(-23.0239331, -43.4817407),
+          radius: 0.8,
+        });
+        const restaurants = await query.get();
+        setRestaurants(
+          restaurants.docs.map((location) => {
+            return {
+              ...location.data(),
+              ...{ distance: location.distance, id: location.id },
+            };
+          }),
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    };
     listNearbyLocations();
   }, []);
+
+  useEffect(() => {
+    //editMarmiteiro();
+    callNearby();
+  }, [callNearby]);
+
+  useEffect(() => {
+    console.log(rest);
+  }, [rest]);
 
   return (
     <Layout>
       <Text>Location here</Text>
+      {rest.length > 0 ? (
+        <Text>Restaurantes carregados</Text>
+      ) : (
+        <Text> Loading... </Text>
+      )}
     </Layout>
   );
 };

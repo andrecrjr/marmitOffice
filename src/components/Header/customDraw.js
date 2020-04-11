@@ -4,9 +4,9 @@ import {
   DrawerItemList,
   DrawerItem,
 } from '@react-navigation/drawer';
-import {View, Text} from 'react-native';
+import { View, Text } from 'react-native';
 
-export default function HeaderDrawer({progress, ...rest}) {
+export default function HeaderDrawer({ progress, ...rest }) {
   return (
     <DrawerContentScrollView {...rest}>
       <View>
