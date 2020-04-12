@@ -18,7 +18,10 @@ export default function Swiper({ navigation }) {
   return (
     <>
       <View style={styleSwipe.startUpView}>
-        <ButtonView onPressFn={openMenu} textStyle={styleSwipe.textStyleButton}>
+        <ButtonView
+          onPressFn={openMenu}
+          styles={{ backgroundColor: 'white' }}
+          textStyle={styleSwipe.textStyleButton}>
           Comece Já!
         </ButtonView>
       </View>

@@ -1,4 +1,4 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 
 export const styleSwipe = StyleSheet.create({
   startUpView: {
@@ -18,23 +18,13 @@ export const styleSwipe = StyleSheet.create({
   textStyleButton: {
     fontSize: 18,
     textAlign: 'center',
-    paddingTop: 10,
   },
 });
 
 export const swiperContainer = StyleSheet.create({
-  containerButton: {
-    alignSelf: 'center',
-    height: 45,
-    borderRadius: 15,
-    width: Dimensions.get('screen').width / 1.2,
-    backgroundColor: '#D50000',
-    flex: 1,
-  },
   buttonText: {
     fontSize: 16,
     textAlign: 'center',
-    paddingTop: 10,
     color: 'white',
   },
 });

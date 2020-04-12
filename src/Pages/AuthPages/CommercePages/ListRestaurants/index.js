@@ -67,53 +67,57 @@ const ListCommerces = () => {
       console.log(e);
     }
   }
+  const listLocations = useCallback(() => {
+    async function listNearbyLocations() {
+      try {
+        console.log('clicou no location', geoloc);
 
-  async function listNearbyLocations() {
-    try {
-      console.log('clicou no location', geoloc);
+        if (geoloc.length > 0) {
+          // Create a GeoCollection reference
+          const geocollection = geofirestore.collection('marmiteiros');
 
-      if (geoloc.length > 0) {
-        // Create a GeoCollection reference
-        const geocollection = geofirestore.collection('marmiteiros');
+          // Create a GeoQuery based on a location
+          const query = geocollection.near({
+            center: new firestore.GeoPoint(geoloc[0], geoloc[1]),
+            radius: 0.5,
+          });
+          const restaurants = await query.get();
+          if (restaurants.docs.length > 0) {
+            console.log(restaurants.docs);
+            setRestaurants(
+              restaurants.docs.map((location) => {
+                return {
+                  ...location.data(),
+                  ...{ distance: location.distance, id: location.id },
+                };
+              }),
+            );
+            setError([]);
+          } else {
+            setRestaurants([]);
 
-        // Create a GeoQuery based on a location
-        const query = geocollection.near({
-          center: new firestore.GeoPoint(geoloc[0], geoloc[1]),
-          radius: 0.5,
-        });
-        const restaurants = await query.get();
-        if (restaurants.docs.length > 0) {
-          console.log(restaurants.docs);
-          setRestaurants(
-            restaurants.docs.map((location) => {
-              return {
-                ...location.data(),
-                ...{ distance: location.distance, id: location.id },
-              };
-            }),
-          );
-          setError([]);
-        } else {
-          setRestaurants([]);
-
-          setError({ description: 'No restaurants found', status: 1 });
+            setError({ description: 'No restaurants found', status: 1 });
+          }
         }
+      } catch (error) {
+        console.log(error);
+        setError({
+          description: 'No latitude or longitude informed',
+          status: 2,
+        });
       }
-    } catch (error) {
-      console.log(error);
-      setError({
-        description: 'No latitude or longitude informed',
-        status: 2,
-      });
     }
-  }
+    listNearbyLocations();
+  }, [geoloc]);
 
   const updatePosition = () => {
     Geolocation.getCurrentPosition(geo_success, geo_error, {
       enableHighAccuracy: true,
-      timeout: 4000,
+      timeout: 100000,
       maximumAge: 1000,
     });
+    listLocations();
+
     watchPos = Geolocation.watchPosition((pos) => geo_success(pos));
   };
 
@@ -126,7 +130,7 @@ const ListCommerces = () => {
     () => {
       Geolocation.clearWatch(watchPos);
     };
-  }, []);
+  }, [watchPos]);
 
   return (
     <Layout>

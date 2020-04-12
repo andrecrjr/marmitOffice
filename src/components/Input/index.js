@@ -1,7 +1,10 @@
-import React, {useState} from 'react';
-import {View, Text, TextInput, Dimensions} from 'react-native';
-
-const FormInput = ({nameInput, onChangeText, onSubmitEditing}, ...props) => {
+import React, { useState } from 'react';
+import { View, Text, TextInput, Dimensions } from 'react-native';
+import { Input, TextError, InputDescription, ContainerInput } from './styles';
+const FormInput = (
+  { nameInput, onChangeText, onSubmitEditing, error, descriptionInput },
+  ...props
+) => {
   const [isFocused, setFocus] = useState(false);
 
   const handleFocus = () => {
@@ -9,20 +12,16 @@ const FormInput = ({nameInput, onChangeText, onSubmitEditing}, ...props) => {
   };
 
   return (
-    <>
-      <Text>{nameInput}</Text>
-      <TextInput
-        style={{
-          height: 40,
-          width: Dimensions.get('screen').width / 1.2,
-          alignSelf: 'center',
-        }}
-        underlineColorAndroid={isFocused ? 'blue' : 'gray'}
+    <ContainerInput>
+      {error ? <TextError>{error.message}</TextError> : null}
+      <InputDescription>{descriptionInput}</InputDescription>
+      <Input
+        underlineColorAndroid={isFocused ? 'black' : error ? 'red' : 'black'}
         onFocus={handleFocus}
         onChangeText={onChangeText}
-        placeholder={'digite seu username'}
+        placeholder={nameInput}
       />
-    </>
+    </ContainerInput>
   );
 };
 

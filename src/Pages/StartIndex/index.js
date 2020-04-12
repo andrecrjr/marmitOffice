@@ -1,14 +1,14 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import Layout from 'components/Layout';
-import {Text, StyleSheet, View, Alert} from 'react-native';
+import { Text, StyleSheet, View, Alert } from 'react-native';
 import Swiper from 'components/LoginSwipe';
 import auth from '@react-native-firebase/auth';
 import Fila from '../../assets/fila.svg';
 import Outline from '../../assets/outline.svg';
 import Like from '../../assets/like.svg';
-import {styled} from './style';
+import { styled } from './style';
 
-export default function StartScreenApp({navigation, route}) {
+export default function StartScreenApp({ navigation, route }) {
   const logout = async () => {
     try {
       await auth().signOut();
@@ -36,7 +36,7 @@ export default function StartScreenApp({navigation, route}) {
   );
 }
 
-const MainDescription = ({styled}) => (
+const MainDescription = ({ styled }) => (
   <View style={styled.containerDescription}>
     <View style={styled.description}>
       <Text style={styled.textDescription}>

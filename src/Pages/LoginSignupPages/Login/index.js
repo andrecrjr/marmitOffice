@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { View, Text, Alert } from 'react-native';
+import { View } from 'react-native';
+import { Title } from './style';
 import Layout from 'components/Layout';
 import { useForm } from 'react-hook-form';
 import FormInput from 'components/Input';
@@ -19,33 +20,44 @@ const LoginPage = ({ navigation }) => {
   };
 
   useEffect(() => {
-    register('email');
+    register('email', {
+      required: true,
+      pattern: {
+        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+        message: 'Endereço de email invalido',
+      },
+    });
     register('password');
-  }, [register]);
+  }, [register, errors]);
 
   const submitLogin = (data) => {
-    console.log(data);
-    signIn(data);
+    console.log('bateu qui');
+    if (Object.keys(errors).length === 0) {
+      signIn(data);
+    }
   };
 
   return (
     <Layout>
       <View>
-        <Text>Login</Text>
+        <Title>Login</Title>
         <FormInput
+          descriptionInput={'Digite seu e-mail de usuário:'}
           nameInput={'email'}
+          error={errors ? errors.email : null}
           onChangeText={(text) => setValue('email', text)}
         />
         <FormInput
+          descriptionInput={'Digite sua senha:'}
           nameInput={'password'}
           onChangeText={(text) => setValue('password', text)}
         />
-        <ButtonView
-          textStyle={{ color: 'black' }}
-          onPressFn={handleSubmit(submitLogin)}>
-          Login
-        </ButtonView>
       </View>
+      <ButtonView
+        textStyle={{ color: 'white' }}
+        onPressFn={handleSubmit(submitLogin)}>
+        Login
+      </ButtonView>
     </Layout>
   );
 };
