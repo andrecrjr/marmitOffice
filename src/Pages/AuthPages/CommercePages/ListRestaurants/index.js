@@ -59,7 +59,7 @@ const ListCommerces = () => {
       console.log(e);
     }
   }
-  //const listLocations = useCallback(() => {
+
   async function listNearbyLocations(lat, lng) {
     try {
       console.log('clicou no location', lat, lng);
@@ -99,8 +99,6 @@ const ListCommerces = () => {
       });
     }
   }
-  //listNearbyLocations();
-  // }, [geoloc]);
 
   const updatePosition = () => {
     watchPos = Geolocation.watchPosition((pos) => geo_success(pos), geo_error, {
