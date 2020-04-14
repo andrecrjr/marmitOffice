@@ -1,11 +1,95 @@
-import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import Layout from 'components/Layout';
+import { Title } from '../Login/style';
+import FormInput from 'components/Input';
+import ButtonView from 'components/Button';
+import { useForm } from 'react-hook-form';
+import CheckBox from '@react-native-community/checkbox';
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 
 const Signup = () => {
+  const { register, handleSubmit, errors, setValue } = useForm();
+  const [checked, setCheck] = useState(false);
+  const usersCollection = firestore().collection('Users');
+  const addUser = async (data) => {
+    try {
+      const newUser = await auth().createUserWithEmailAndPassword(
+        data.email,
+        data.password,
+      );
+      if (newUser) {
+        const user = await usersCollection.doc(newUser.user.uid).set({
+          email: data.email,
+          commerceUser: checked,
+          id: newUser.user.uid,
+        });
+        return user;
+      }
+    } catch (error) {
+      if (error.code === 'auth/email-already-in-use') {
+        console.log('That email address is already in use!');
+      }
+
+      if (error.code === 'auth/invalid-email') {
+        console.log('That email address is invalid!');
+      }
+
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    register('email', {
+      required: true,
+      pattern: {
+        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+        message: 'Endereço de email invalido',
+      },
+    });
+    register('password', {
+      required: true,
+    });
+    register('displayName');
+
+    return () => {};
+  }, [register]);
   return (
     <Layout>
-      <Text> Cadastre-se </Text>
+      <View>
+        <Title> Cadastre-se </Title>
+        <FormInput
+          descriptionInput={'Digite seu nome e sobrenome:'}
+          nameInput={'ex.:André Carlos'}
+          error={errors ? errors.email : null}
+          onChangeText={(text) => setValue('email', text)}
+        />
+        <FormInput
+          descriptionInput={'Digite seu e-mail de usuário:'}
+          nameInput={'ex.:andre@gmail.com'}
+          error={errors ? errors.email : null}
+          onChangeText={(text) => setValue('email', text)}
+        />
+        <FormInput
+          descriptionInput={'Digite sua senha:'}
+          nameInput={'password'}
+          onChangeText={(text) => setValue('password', text)}
+        />
+        <FormInput
+          checkbox={true}
+          isChecked={checked}
+          onChange={() => {
+            setCheck(!checked);
+          }}
+          descriptionInput={'Você é um estabelecimento/vendedor autônomo?'}
+          nameInput={'estabelecimento'}
+        />
+      </View>
+      <ButtonView
+        textStyle={{ color: 'white' }}
+        onPressFn={handleSubmit(addUser)}>
+        Sign up!
+      </ButtonView>
     </Layout>
   );
 };

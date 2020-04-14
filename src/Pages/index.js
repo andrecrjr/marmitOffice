@@ -1,9 +1,9 @@
 import React from 'react';
 
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
-import {useAuthFirebase} from 'components/hooks/useAuth';
+import { useAuthFirebase } from 'components/hooks/useAuth';
 import Login from './LoginSignupPages/Login';
 import Signup from './LoginSignupPages/Signup';
 import UserPages from './AuthPages';
@@ -12,7 +12,7 @@ import StartScreenApp from './StartIndex';
 const AuthStack = createStackNavigator();
 
 export default function App() {
-  const {authenticated} = useAuthFirebase();
+  const { authenticated } = useAuthFirebase();
 
   return (
     <NavigationContainer>

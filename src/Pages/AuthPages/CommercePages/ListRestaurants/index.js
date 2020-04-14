@@ -111,7 +111,6 @@ const ListCommerces = () => {
   function geo_success(info) {
     const { latitude, longitude } = info.coords;
     listNearbyLocations(latitude, longitude);
-    //setGeolocation([, ]);
   }
 
   function geo_error(info) {
