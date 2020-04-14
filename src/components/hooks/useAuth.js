@@ -20,10 +20,10 @@ export const useAuthFirebase = () => {
     const subscribedUser = auth().onAuthStateChanged(authState);
     return subscribedUser;
   }, []);
-  const userDatabase = useCallback(() => {
+  const userGetDatabase = useCallback(() => {
     const userFiredatabase = async () => {
       try {
-        const dataUser = firestore()
+        firestore()
           .collection('Users')
           .doc(user.uid)
           .onSnapshot((documentSnapshot) =>
@@ -38,11 +38,8 @@ export const useAuthFirebase = () => {
 
   React.useEffect(() => {
     userFunction();
-    if (user) {
-      console.log(user);
-      userDatabase();
-    }
-  }, [userFunction, user, userDatabase]);
+    userGetDatabase();
+  }, [userFunction, user, userGetDatabase]);
 
   return { user, authenticated, userData };
 };

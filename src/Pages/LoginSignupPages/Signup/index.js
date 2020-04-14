@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { View, Alert } from 'react-native';
 import Layout from 'components/Layout';
-import { Title } from '../Login/style';
+import { Title } from '../style';
 import FormInput from 'components/Input';
 import ButtonView from 'components/Button';
 import { useForm } from 'react-hook-form';
-import CheckBox from '@react-native-community/checkbox';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 
@@ -29,11 +28,11 @@ const Signup = () => {
       }
     } catch (error) {
       if (error.code === 'auth/email-already-in-use') {
-        console.log('That email address is already in use!');
+        Alert.alert('That email address is already in use!');
       }
 
       if (error.code === 'auth/invalid-email') {
-        console.log('That email address is invalid!');
+        Alert.alert('That email address is already in use!');
       }
 
       console.error(error);
@@ -61,8 +60,8 @@ const Signup = () => {
         <FormInput
           descriptionInput={'Digite seu nome e sobrenome:'}
           nameInput={'ex.:André Carlos'}
-          error={errors ? errors.email : null}
-          onChangeText={(text) => setValue('email', text)}
+          error={errors ? errors.displayName : null}
+          onChangeText={(text) => setValue('displayName', text)}
         />
         <FormInput
           descriptionInput={'Digite seu e-mail de usuário:'}
@@ -73,6 +72,7 @@ const Signup = () => {
         <FormInput
           descriptionInput={'Digite sua senha:'}
           nameInput={'password'}
+          error={errors ? errors.password : null}
           onChangeText={(text) => setValue('password', text)}
         />
         <FormInput
