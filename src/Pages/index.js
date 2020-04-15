@@ -7,6 +7,7 @@ import { useAuthFirebase } from 'components/hooks/useAuth';
 import Login from './LoginSignupPages/Login';
 import Signup from './LoginSignupPages/Signup';
 import UserPages from './AuthPages';
+import { CommerceMapCreateScreen } from './AuthPages/CommercePages';
 import StartScreenApp from './StartIndex';
 
 const AuthStack = createStackNavigator();
@@ -30,6 +31,10 @@ export default function App() {
         ) : (
           <>
             <AuthStack.Screen name="User" component={UserPages} />
+            <AuthStack.Screen
+              name="CreateCommerce"
+              component={CommerceMapCreateScreen}
+            />
           </>
         )}
       </AuthStack.Navigator>

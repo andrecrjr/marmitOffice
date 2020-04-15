@@ -8,6 +8,7 @@ const FormInput = (
     onChangeText,
     onSubmitEditing,
     error,
+    styleWrap,
     descriptionInput,
     checkbox,
     onChange,
@@ -23,7 +24,7 @@ const FormInput = (
 
   if (checkbox) {
     return (
-      <ContainerInput checkbox={true} style={{ paddingBottom: 35 }}>
+      <ContainerInput checkbox={true} style={[styleWrap]}>
         <CheckBox onChange={onChange} value={isChecked} />
         <InputDescription>{descriptionInput}</InputDescription>
       </ContainerInput>
@@ -31,7 +32,7 @@ const FormInput = (
   }
 
   return (
-    <ContainerInput>
+    <ContainerInput style={styleWrap}>
       {error ? <TextError>{error.message}</TextError> : null}
       <InputDescription>{descriptionInput}</InputDescription>
       <Input
