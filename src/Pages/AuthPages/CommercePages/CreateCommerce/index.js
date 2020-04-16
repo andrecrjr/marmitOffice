@@ -22,7 +22,7 @@ const CommerceMapCreateScreen = () => {
   const { user, userData } = useAuthFirebase();
   const { register, handleSubmit, errors, setValue } = useForm();
   const [isNotFreelancer, setCheckFreelancer] = useState(false);
-  const [firstPart, setFirstPartDone] = useState(false);
+  const [firstPart, setFirstPartDone] = useState(true);
   const [userNewData, setNewUser] = useState([]);
 
   const createGeoCommerce = (data) => {
