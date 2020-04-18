@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Layout from 'components/Layout';
-import { View, Text, PermissionsAndroid, Alert, Button } from 'react-native';
+import { View, Text, Alert, Button } from 'react-native';
 import {
   GeoCollectionReference,
   GeoFirestore,
@@ -8,18 +8,16 @@ import {
   GeoQuerySnapshot,
 } from 'geofirestore';
 import firestore from '@react-native-firebase/firestore';
-import Geolocation from '@react-native-community/geolocation';
+import useGeolocation from 'components/hooks/useGeolocation';
 
 const geofirestore = new GeoFirestore(firestore());
 const isHermes = () => global.HermesInternal !== null;
 
 const ListCommerces = () => {
-  let watchPos;
-
   console.log(isHermes());
   const [rest, setRestaurants] = useState([]);
-  const [geoloc, setGeolocation] = useState([]);
   const [errors, setError] = useState([]);
+  const { geoloc, refreshLocation } = useGeolocation();
 
   const createMarmiteiro = (data) => {
     try {
@@ -48,17 +46,6 @@ const ListCommerces = () => {
     });
     console.log(user);
   };
-
-  async function grantGeolocation() {
-    try {
-      const granted = await PermissionsAndroid.check(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-      );
-      if (granted) return true;
-    } catch (e) {
-      console.log(e);
-    }
-  }
 
   async function listNearbyLocations(lat, lng) {
     try {
@@ -100,32 +87,13 @@ const ListCommerces = () => {
     }
   }
 
-  const updatePosition = () => {
-    watchPos = Geolocation.watchPosition((pos) => geo_success(pos), geo_error, {
-      enableHighAccuracy: true,
-      timeout: 40000,
-      maximumAge: 1000,
-    });
-  };
-
-  function geo_success(info) {
-    const { latitude, longitude } = info.coords;
-    listNearbyLocations(latitude, longitude);
-  }
-
-  function geo_error(info) {
-    console.log(info);
-  }
-
   useEffect(() => {
-    if (grantGeolocation()) {
-      updatePosition();
+    refreshLocation();
+    if (geoloc) {
+      console.log(geoloc);
+      listNearbyLocations(geoloc[0], geoloc[1]);
     }
-
-    () => {
-      Geolocation.clearWatch(watchPos);
-    };
-  }, []);
+  }, [geoloc, grantGeolocation]);
 
   return (
     <Layout>

@@ -1,42 +1,63 @@
-import React, { useState } from 'react';
-import { View, Text } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Dimensions, Text, Platform } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import MapView, { Marker } from 'react-native-maps';
-
+import useGeolocation from 'components/hooks/useGeolocation';
 const MapCommerce = () => {
+  const { geoloc, refreshLocation, grantGeolocation } = useGeolocation();
+  const [marker, setMarker] = useState({});
+
   const [region, setRegion] = useState({
     region: {
-      latitude: 37.78825,
-      longitude: -122.4324,
-      latitudeDelta: 0.0024,
-      longitudeDelta: 0.0024,
+      latitude: 0,
+      longitude: 0,
+      latitudeDelta: 0.0014,
+      longitudeDelta: 0.0014,
     },
   });
 
-  const changeRegion = (region) => {
-    setRegion({ region: region });
+  useEffect(() => {
+    grantGeolocation();
+    console.log('bateu aqui dentro', geoloc);
+
+    setMarker({
+      coords: {
+        latitude: geoloc[0],
+        longitude: geoloc[1],
+      },
+    });
+    changeRegion(geoloc[0], geoloc[1]);
+  }, [geoloc]);
+
+  const changeRegion = (lat, lng) => {
+    setRegion({
+      region: {
+        latitude: lat,
+        longitude: lng,
+        latitudeDelta: 0.0012,
+        longitudeDelta: 0.0012,
+      },
+    });
   };
-
-  const [marker, setMarker] = useState({});
-
   return (
     <>
       <Text>
         Agora seu cadastro está quase pronto! Só precisamos que você pesquise
         seu endereço de venda fixa!
       </Text>
-      <MapView
-        style={{ height: 600 }}
-        region={region.region}
-        onRegionChange={changeRegion}>
+      <MapView style={{ flex: 1 }} region={region.region}>
         {marker.coords ? (
           <Marker
             draggable={true}
             coordinate={marker.coords}
             title={`Seu espaço será aqui?`}
-            onDragEnd={(e) =>
-              setMarker({ coords: e.nativeEvent.coordinate })
-            }></Marker>
+            onDragEnd={(e) => {
+              setMarker({ coords: e.nativeEvent.coordinate });
+              changeRegion(
+                e.nativeEvent.coordinate.latitude,
+                e.nativeEvent.coordinate.longitude,
+              );
+            }}></Marker>
         ) : null}
       </MapView>
       <SearchMap getData={setRegion} setMarker={setMarker} />
@@ -50,12 +71,24 @@ const SearchMap = ({ getData, setMarker }) => {
   return (
     <GooglePlacesAutocomplete
       placeholder="Seu endereço"
-      minLength={4} // minimum length of text to search
+      minLength={3} // minimum length of text to search
       autoFocus={true}
       returnKeyType={'search'} // Can be left out for default return key https://facebook.github.io/react-native/docs/textinput.html#returnkeytype
       keyboardAppearance={'light'} // Can be left out for default keyboardAppearance https://facebook.github.io/react-native/docs/textinput.html#keyboardappearance
       listViewDisplayed="true" // true/false/undefined
       fetchDetails={true}
+      enablePoweredByContainer={false}
+      styles={{
+        container: {
+          position: 'absolute',
+          width: '100%',
+          top: Platform.select({ ios: 120, android: 100 }),
+        },
+        textInputContainer: { width: '100%', top: 0, backgroundColor: 'white' },
+        listView: {
+          backgroundColor: 'white',
+        },
+      }}
       onPress={(data, details) => {
         // 'details' is provided when fetchDetails = true
         setMarker({
