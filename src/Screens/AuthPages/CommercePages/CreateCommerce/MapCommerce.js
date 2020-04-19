@@ -4,7 +4,7 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import MapView, { Marker } from 'react-native-maps';
 import useGeolocation from 'components/hooks/useGeolocation';
 const MapCommerce = () => {
-  const { geoloc, refreshLocation, grantGeolocation } = useGeolocation();
+  const { geoloc, grantGeolocation } = useGeolocation();
   const [marker, setMarker] = useState({});
 
   const [region, setRegion] = useState({
@@ -18,8 +18,7 @@ const MapCommerce = () => {
 
   useEffect(() => {
     grantGeolocation();
-    console.log('bateu aqui dentro', geoloc);
-
+    console.log(geoloc);
     setMarker({
       coords: {
         latitude: geoloc[0],
@@ -34,8 +33,8 @@ const MapCommerce = () => {
       region: {
         latitude: lat,
         longitude: lng,
-        latitudeDelta: 0.0012,
-        longitudeDelta: 0.0012,
+        latitudeDelta: 0.0014,
+        longitudeDelta: 0.0014,
       },
     });
   };
@@ -82,9 +81,24 @@ const SearchMap = ({ getData, setMarker }) => {
         container: {
           position: 'absolute',
           width: '100%',
-          top: Platform.select({ ios: 120, android: 100 }),
+          display: 'flex',
+          top: Platform.select({ ios: 130, android: 110 }),
         },
-        textInputContainer: { width: '100%', top: 0, backgroundColor: 'white' },
+        textInputContainer: {
+          width: '90%',
+          top: 0,
+          backgroundColor: 'white',
+          alignSelf: 'center',
+          shadowColor: '#000',
+          shadowOffset: {
+            width: 1,
+            height: 5,
+          },
+          shadowOpacity: 0.34,
+          shadowRadius: 6.27,
+
+          elevation: 10,
+        },
         listView: {
           backgroundColor: 'white',
         },
