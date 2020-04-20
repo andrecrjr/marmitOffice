@@ -11,16 +11,6 @@ const LoginPage = ({ navigation }) => {
   const { register, handleSubmit, errors, setValue } = useForm();
   const [errorSubmit, setError] = useState();
 
-  const signIn = async (data) => {
-    try {
-      await auth().signInWithEmailAndPassword(data.email, data.password);
-      navigation.navigate('User');
-    } catch (error) {
-      console.log(error);
-      setError(error);
-    }
-  };
-
   useEffect(() => {
     register('email', {
       required: true,
@@ -35,6 +25,16 @@ const LoginPage = ({ navigation }) => {
   const submitLogin = (data) => {
     if (Object.keys(errors).length === 0) {
       signIn(data);
+    }
+  };
+
+  const signIn = async (data) => {
+    try {
+      await auth().signInWithEmailAndPassword(data.email, data.password);
+      navigation.navigate('User');
+    } catch (error) {
+      console.log(error);
+      setError(error);
     }
   };
 

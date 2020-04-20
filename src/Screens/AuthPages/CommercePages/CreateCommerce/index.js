@@ -1,17 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text } from 'react-native';
 import Layout from 'components/Layout';
 import { useAuthFirebase } from 'components/hooks/useAuth';
 import firestore from '@react-native-firebase/firestore';
-import Geolocation from '@react-native-community/geolocation';
-import {
-  GeoCollectionReference,
-  GeoFirestore,
-  GeoQuery,
-  GeoQuerySnapshot,
-} from 'geofirestore';
+import { GeoFirestore } from 'geofirestore';
 import FormInput from 'components/Input';
 import ButtonView from 'components/Button';
+import { ButtonDone } from './style';
 import { useForm } from 'react-hook-form';
 
 import MapCommerce from './MapCommerce';
@@ -21,9 +15,8 @@ const geofirestore = new GeoFirestore(firestore());
 const CommerceSettings = ({ hasMenu }) => {
   const { user, userData } = useAuthFirebase();
   const { register, handleSubmit, errors, setValue } = useForm();
-  const [isNotFreelancer, setCheckFreelancer] = useState(false);
+  const [isNotFreela, setCheckFreela] = useState(false);
   const [firstPart, setFirstPartDone] = useState(true);
-  const [userNewData, setNewUser] = useState([]);
 
   const createGeoCommerce = (data) => {
     try {
@@ -33,6 +26,7 @@ const CommerceSettings = ({ hasMenu }) => {
           commerceName: data.displayName,
           cpf: data.cpf || null,
           cnpj: data.cnpj || null,
+          uid: user.uid,
           coordinates: new firestore.GeoPoint(-23.0195, -43.4869),
         })
         .then(() => {
@@ -72,11 +66,11 @@ const CommerceSettings = ({ hasMenu }) => {
             checkbox={true}
             isChecked={isNotFreelancer}
             onChange={() => {
-              setCheckFreelancer(!isNotFreelancer);
+              setCheckFreela(!isNotFreela);
             }}
             descriptionInput={'Você é Pessoa Jurídica e tem CNPJ?'}
           />
-          {isNotFreelancer ? (
+          {isNotFreela ? (
             <FormInput
               styleWrap={{ marginTop: 35, paddingBottom: 15 }}
               descriptionInput={'Digite seu CNPJ:'}
@@ -99,7 +93,10 @@ const CommerceSettings = ({ hasMenu }) => {
           </ButtonView>
         </>
       ) : (
-        <MapCommerce />
+        <>
+          <MapCommerce />
+          <ButtonDone></ButtonDone>
+        </>
       )}
     </Layout>
   );

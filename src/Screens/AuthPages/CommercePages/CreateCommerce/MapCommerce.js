@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Dimensions, Text, Platform } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import MapView, { Marker } from 'react-native-maps';
 import useGeolocation from 'components/hooks/useGeolocation';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { GeoContext } from 'components/Contexts/LocationContext';
 
 Icon.loadFont();
 const MapCommerce = () => {
-  const { geoloc, grantGeolocation } = useGeolocation();
+  // const geoloc = useGeolocation();
+  const geoloc = useContext(GeoContext);
   const [marker, setMarker] = useState({});
 
   const [region, setRegion] = useState({
@@ -20,22 +22,21 @@ const MapCommerce = () => {
   });
 
   useEffect(() => {
-    grantGeolocation();
-
+    console.log('aqui', geoloc);
     setMarker({
       coords: {
-        latitude: geoloc[0],
-        longitude: geoloc[1],
+        latitude: geoloc.latitude,
+        longitude: geoloc.longitude,
       },
     });
-    changeRegion(geoloc[0], geoloc[1]);
+    changeRegion(geoloc);
   }, [geoloc]);
 
-  const changeRegion = (lat, lng) => {
+  const changeRegion = ({ latitude, longitude }) => {
     setRegion({
       region: {
-        latitude: lat,
-        longitude: lng,
+        latitude: latitude,
+        longitude: longitude,
         latitudeDelta: 0.0014,
         longitudeDelta: 0.0014,
       },
@@ -55,10 +56,7 @@ const MapCommerce = () => {
             title={`Seu espaço será aqui?`}
             onDragEnd={(e) => {
               setMarker({ coords: e.nativeEvent.coordinate });
-              changeRegion(
-                e.nativeEvent.coordinate.latitude,
-                e.nativeEvent.coordinate.longitude,
-              );
+              changeRegion(e.nativeEvent.coordinate);
             }}></Marker>
         ) : null}
       </MapView>

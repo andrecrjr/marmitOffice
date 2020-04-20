@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -7,7 +7,8 @@ import { useAuthFirebase } from 'components/hooks/useAuth';
 import Login from './LoginSignupPages/Login';
 import Signup from './LoginSignupPages/Signup';
 import UserPages from './AuthPages';
-import { CommerceMapCreateScreen } from './AuthPages/CommercePages';
+import { useGeolocation } from 'components/hooks/useGeolocation';
+
 import StartScreenApp from './StartIndex';
 
 const AuthStack = createStackNavigator();

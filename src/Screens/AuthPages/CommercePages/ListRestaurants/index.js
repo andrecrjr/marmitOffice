@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Layout from 'components/Layout';
-import { View, Text, Alert, Button } from 'react-native';
+import { Text } from 'react-native';
 import {
   GeoCollectionReference,
   GeoFirestore,
@@ -8,34 +8,16 @@ import {
   GeoQuerySnapshot,
 } from 'geofirestore';
 import firestore from '@react-native-firebase/firestore';
-import useGeolocation from 'components/hooks/useGeolocation';
+import { GeoContext } from 'components/Contexts/LocationContext';
 
 const geofirestore = new GeoFirestore(firestore());
 const isHermes = () => global.HermesInternal !== null;
 
 const ListCommerces = () => {
   console.log(isHermes());
-  const [rest, setRestaurants] = useState([]);
+  const geoloc = useContext(GeoContext);
+  const [places, setPlaces] = useState([]);
   const [errors, setError] = useState([]);
-  const { geoloc, grantGeolocation } = useGeolocation();
-
-  const createMarmiteiro = (data) => {
-    try {
-      const geocollection = geofirestore.collection('marmiteiros');
-      geocollection
-        .add({
-          restaurante: 'recreio shopping burguer king',
-          cpf: 6666666,
-          cnpj: 899998777,
-          coordinates: new firestore.GeoPoint(-23.0195, -43.4869),
-        })
-        .then(() => {
-          console.log('marmiteiro added!');
-        });
-    } catch (e) {
-      console.log(e);
-    }
-  };
 
   const editMarmiteiro = async () => {
     const users = await firestore()
@@ -60,8 +42,7 @@ const ListCommerces = () => {
         });
         const restaurants = await query.get();
         if (restaurants.docs.length > 0) {
-          console.log(restaurants.docs);
-          setRestaurants(
+          setPlaces(
             restaurants.docs.map((location) => {
               return {
                 ...location.data(),
@@ -71,7 +52,7 @@ const ListCommerces = () => {
           );
           setError([]);
         } else {
-          setRestaurants([]);
+          setPlaces([]);
 
           setError({ description: 'No restaurants found', status: 1 });
         }
@@ -86,18 +67,19 @@ const ListCommerces = () => {
   }
 
   useEffect(() => {
-    grantGeolocation();
-    if (geoloc) {
-      listNearbyLocations(geoloc[0], geoloc[1]);
-    }
+    listNearbyLocations(geoloc.latitude, geoloc.longitude);
   }, [geoloc]);
 
   return (
     <Layout>
       {errors ? <Text>{errors.description}</Text> : null}
-      <Text>Location here {geoloc}</Text>
+      <Text>Location here {geoloc.latitude}</Text>
 
-      {rest.length > 0 ? <Text>Restaurants OK </Text> : <Text>Loading...</Text>}
+      {places.length > 0 ? (
+        <Text>Restaurants OK </Text>
+      ) : (
+        <Text>Loading...</Text>
+      )}
     </Layout>
   );
 };

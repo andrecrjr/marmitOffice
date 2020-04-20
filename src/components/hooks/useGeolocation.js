@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, PermissionsAndroid, Alert } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { PermissionsAndroid, Alert } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 
 export default function useGeolocation() {
-  const [geoloc, setGeolocation] = useState([0, 0]);
+  const [geoloc, setGeolocation] = useState({ latitude: 0, longitude: 0 });
+  let watchId;
 
   async function grantGeolocation() {
     try {
@@ -12,17 +13,18 @@ export default function useGeolocation() {
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         updatePosition();
+        console.log(geoloc);
       } else {
-        return false;
+        Alert.alert('Your GPS was not being used');
       }
     } catch (e) {
       Alert.alert('Geolocation not found');
     }
   }
 
-  function geo_success(info) {
-    const { latitude, longitude } = info.coords;
-    setGeolocation([latitude, longitude]);
+  function geo_success(event) {
+    const { latitude, longitude } = event.coords;
+    setGeolocation({ latitude: latitude, longitude: longitude });
   }
 
   function geo_error(info) {
@@ -30,17 +32,19 @@ export default function useGeolocation() {
   }
 
   const updatePosition = () => {
-    Geolocation.watchPosition((pos) => geo_success(pos), geo_error, {
+    watchId = Geolocation.watchPosition((pos) => geo_success(pos), geo_error, {
       enableHighAccuracy: true,
-      timeout: 30000,
+      timeout: 2000,
       maximumAge: 1000,
     });
   };
-  /*
-  const refreshLocation = useCallback(async () => {
+
+  useEffect(() => {
     grantGeolocation();
-    console.log(geoloc);
-  }, [geoloc, grantGeolocation]);
-*/
-  return { geoloc, grantGeolocation };
+    () => {
+      Geolocation.clearWatch(watchId);
+    };
+  }, []);
+
+  return geoloc;
 }
