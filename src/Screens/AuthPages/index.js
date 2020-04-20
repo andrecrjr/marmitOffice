@@ -18,13 +18,13 @@ const UserPages = () => {
       }}>
       <UserStack.Screen name="Profile" component={Authenticated} />
       <UserStack.Screen name="Marmitoffices around" component={ListCommerces} />
-      <UserStack.Screen name="teste animation" component={AnimatedTest} />
       <UserStack.Screen name="Settings" component={CommerceSettings} />
       <UserStack.Screen
         name="Logout"
         component={StartScreenApp}
         initialParams={{ logout: true }}
       />
+      {/* <UserStack.Screen name="teste animation" component={AnimatedTest} /> */}
     </UserStack.Navigator>
   );
 };

@@ -43,10 +43,9 @@ const MapCommerce = () => {
   };
   return (
     <>
-      <Text>
-        <Icon name="place" size={30} />
-        Agora seu cadastro está quase pronto! Só precisamos que você pesquise
-        seu endereço de venda fixa!
+      <Text style={{ alignSelf: 'center', paddingTop: 55 }}>
+        <Icon name="place" size={30} style={{ paddingTop: 12 }} /> Adicione seu
+        local de venda!
       </Text>
       <MapView style={{ flex: 1 }} region={region.region}>
         {marker.coords ? (
@@ -86,7 +85,7 @@ const SearchMap = ({ getData, setMarker }) => {
           position: 'absolute',
           width: '100%',
           display: 'flex',
-          top: Platform.select({ ios: 130, android: 110 }),
+          top: Platform.select({ ios: 155, android: 165 }),
         },
         textInputContainer: {
           width: '90%',

@@ -7,3 +7,10 @@ export const HeaderContainer = styled.View`
   flex-direction: row;
   align-items: center;
 `;
+
+export const Logo = styled.Text`
+  font-family: 'Times New Roman';
+  align-self: center;
+  font-size: 25px;
+  color: white;
+`;

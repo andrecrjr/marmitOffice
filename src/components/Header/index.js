@@ -1,7 +1,7 @@
 import React from 'react';
-import { Text, ScrollView, StyleSheet, View } from 'react-native';
-import { UserAuth } from '../Layout/UserContext';
-import { HeaderContainer } from './styles';
+import { UserAuth } from 'components/Layout/UserContext';
+import { displayName } from '../../../app.json';
+import { HeaderContainer, Logo } from './styles';
 import ButtonView from '../Button';
 import { useNavigation } from '@react-navigation/native';
 
@@ -11,19 +11,22 @@ export default function Header() {
 
   if (user) {
     <HeaderContainer>
-      <Text>MarmitOffice</Text>
+      <Logo>{displayName}</Logo>
     </HeaderContainer>;
   }
 
   return (
     <HeaderContainer>
       {user ? (
-        <ButtonView header={true} onPressFn={() => navigator.openDrawer()}>
+        <ButtonView
+          header={true}
+          styles={{ paddingLeft: 10 }}
+          onPressFn={() => navigator.openDrawer()}>
           Abrir
         </ButtonView>
       ) : null}
 
-      <Text>MarmitOffice</Text>
+      <Logo>{displayName}</Logo>
     </HeaderContainer>
   );
 }

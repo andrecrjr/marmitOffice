@@ -5,7 +5,7 @@ import React from 'react';
 
 export default function Settings({ hasMap }) {
   const { userData } = React.useContext(UserAuth);
-  console.log(hasMap);
+
   if (userData.commerceUser) {
     return <CommerceSettings />;
   }

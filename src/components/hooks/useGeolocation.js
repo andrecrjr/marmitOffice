@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, PermissionsAndroid } from 'react-native';
+import { View, Text, PermissionsAndroid, Alert } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 
 export default function useGeolocation() {
@@ -16,7 +16,7 @@ export default function useGeolocation() {
         return false;
       }
     } catch (e) {
-      console.log(e);
+      Alert.alert('Geolocation not found');
     }
   }
 

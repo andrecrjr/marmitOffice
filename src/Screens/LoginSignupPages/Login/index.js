@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { Title } from '../style';
 import Layout from 'components/Layout';
@@ -9,6 +9,7 @@ import auth from '@react-native-firebase/auth';
 
 const LoginPage = ({ navigation }) => {
   const { register, handleSubmit, errors, setValue } = useForm();
+  const [errorSubmit, setError] = useState();
 
   const signIn = async (data) => {
     try {
@@ -16,6 +17,7 @@ const LoginPage = ({ navigation }) => {
       navigation.navigate('User');
     } catch (error) {
       console.log(error);
+      setError(error);
     }
   };
 
@@ -31,7 +33,6 @@ const LoginPage = ({ navigation }) => {
   }, [register, errors]);
 
   const submitLogin = (data) => {
-    console.log('bateu qui');
     if (Object.keys(errors).length === 0) {
       signIn(data);
     }
@@ -44,7 +45,7 @@ const LoginPage = ({ navigation }) => {
         <FormInput
           descriptionInput={'Digite seu e-mail de usuário:'}
           nameInput={'email'}
-          error={errors ? errors.email : null}
+          error={errors || errorSubmit ? errors.email || errorSubmit : null}
           onChangeText={(text) => setValue('email', text)}
         />
         <FormInput

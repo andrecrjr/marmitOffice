@@ -49,8 +49,6 @@ const ListCommerces = () => {
 
   async function listNearbyLocations(lat, lng, filterKm = 0.5) {
     try {
-      console.log('clicou no location', lat, lng);
-
       if (lat && lng) {
         // Create a GeoCollection reference
         const geocollection = geofirestore.collection('marmiteiros');
@@ -92,7 +90,7 @@ const ListCommerces = () => {
     if (geoloc) {
       listNearbyLocations(geoloc[0], geoloc[1]);
     }
-  }, [geoloc, grantGeolocation]);
+  }, [geoloc]);
 
   return (
     <Layout>
