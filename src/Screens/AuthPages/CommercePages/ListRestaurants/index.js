@@ -17,7 +17,7 @@ const ListCommerces = () => {
   console.log(isHermes());
   const [rest, setRestaurants] = useState([]);
   const [errors, setError] = useState([]);
-  const { geoloc, refreshLocation } = useGeolocation();
+  const { geoloc, grantGeolocation } = useGeolocation();
 
   const createMarmiteiro = (data) => {
     try {
@@ -47,7 +47,7 @@ const ListCommerces = () => {
     console.log(user);
   };
 
-  async function listNearbyLocations(lat, lng) {
+  async function listNearbyLocations(lat, lng, filterKm = 0.5) {
     try {
       console.log('clicou no location', lat, lng);
 
@@ -58,7 +58,7 @@ const ListCommerces = () => {
         // Create a GeoQuery based on a location
         const query = geocollection.near({
           center: new firestore.GeoPoint(lat, lng),
-          radius: 0.5,
+          radius: filterKm,
         });
         const restaurants = await query.get();
         if (restaurants.docs.length > 0) {
@@ -88,9 +88,8 @@ const ListCommerces = () => {
   }
 
   useEffect(() => {
-    refreshLocation();
+    grantGeolocation();
     if (geoloc) {
-      console.log(geoloc);
       listNearbyLocations(geoloc[0], geoloc[1]);
     }
   }, [geoloc, grantGeolocation]);

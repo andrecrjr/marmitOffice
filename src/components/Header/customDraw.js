@@ -9,7 +9,7 @@ import { View, Text } from 'react-native';
 export default function HeaderDrawer({ progress, ...rest }) {
   return (
     <DrawerContentScrollView {...rest}>
-      <View>
+      <View style={{ marginTop: 200 }}>
         <DrawerItemList {...rest} />
         <DrawerItem label="Help" onPress={() => alert('Link to help')} />
       </View>

@@ -1,3 +1,3 @@
 import ListCommerces from './ListRestaurants';
-import CommerceMapCreateScreen from './CreateCommerce';
-export { ListCommerces, CommerceMapCreateScreen };
+import CommerceSettings from './CreateCommerce';
+export { ListCommerces, CommerceSettings };

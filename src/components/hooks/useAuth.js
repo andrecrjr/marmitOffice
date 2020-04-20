@@ -7,9 +7,9 @@ export const useAuthFirebase = () => {
   const [authenticated, setAuth] = useState(false);
   const [userData, setDataUser] = useState({});
 
-  const authState = (userData) => {
-    setUser(userData);
-    if (userData) {
+  const authState = (data) => {
+    setUser(data);
+    if (data) {
       setAuth(true);
     } else {
       setAuth(false);
@@ -33,7 +33,9 @@ export const useAuthFirebase = () => {
         console.log(e);
       }
     };
-    if (user) userFiredatabase();
+    if (user) {
+      userFiredatabase();
+    }
   }, [user]);
 
   React.useEffect(() => {

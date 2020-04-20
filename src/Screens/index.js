@@ -31,10 +31,6 @@ export default function App() {
         ) : (
           <>
             <AuthStack.Screen name="User" component={UserPages} />
-            <AuthStack.Screen
-              name="CreateCommerce"
-              component={CommerceMapCreateScreen}
-            />
           </>
         )}
       </AuthStack.Navigator>

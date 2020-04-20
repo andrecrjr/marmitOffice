@@ -3,6 +3,9 @@ import { Dimensions, Text, Platform } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import MapView, { Marker } from 'react-native-maps';
 import useGeolocation from 'components/hooks/useGeolocation';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+
+Icon.loadFont();
 const MapCommerce = () => {
   const { geoloc, grantGeolocation } = useGeolocation();
   const [marker, setMarker] = useState({});
@@ -18,7 +21,7 @@ const MapCommerce = () => {
 
   useEffect(() => {
     grantGeolocation();
-    console.log(geoloc);
+
     setMarker({
       coords: {
         latitude: geoloc[0],
@@ -41,6 +44,7 @@ const MapCommerce = () => {
   return (
     <>
       <Text>
+        <Icon name="place" size={30} />
         Agora seu cadastro está quase pronto! Só precisamos que você pesquise
         seu endereço de venda fixa!
       </Text>

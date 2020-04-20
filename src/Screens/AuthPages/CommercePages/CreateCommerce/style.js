@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
 
-const ScreenDescription = styled.Text`
-  padding: 16px;
+export const ScreenDescription = styled.Text`
+  padding-top: 55px;
 `;

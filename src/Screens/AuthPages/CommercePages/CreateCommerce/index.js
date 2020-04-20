@@ -18,7 +18,7 @@ import MapCommerce from './MapCommerce';
 
 const geofirestore = new GeoFirestore(firestore());
 
-const CommerceMapCreateScreen = () => {
+const CommerceSettings = ({ hasMenu }) => {
   const { user, userData } = useAuthFirebase();
   const { register, handleSubmit, errors, setValue } = useForm();
   const [isNotFreelancer, setCheckFreelancer] = useState(false);
@@ -57,7 +57,7 @@ const CommerceMapCreateScreen = () => {
     register('cnpj');
   }, [register]);
   return (
-    <Layout>
+    <Layout hasMenu={hasMenu}>
       {!firstPart ? (
         <>
           <FormInput
@@ -105,4 +105,4 @@ const CommerceMapCreateScreen = () => {
   );
 };
 
-export default CommerceMapCreateScreen;
+export default CommerceSettings;
