@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { GeoContext } from 'components/Contexts/LocationContext';
 
 Icon.loadFont();
-const MapCommerce = () => {
+const MapCommerce = ({ getLocation }) => {
   // const geoloc = useGeolocation();
   const geoloc = useContext(GeoContext);
   const [marker, setMarker] = useState({});
@@ -22,7 +22,6 @@ const MapCommerce = () => {
   });
 
   useEffect(() => {
-    console.log('aqui', geoloc);
     setMarker({
       coords: {
         latitude: geoloc.latitude,
@@ -44,19 +43,26 @@ const MapCommerce = () => {
   };
   return (
     <>
-      <Text style={{ alignSelf: 'center', paddingTop: 55 }}>
-        <Icon name="place" size={30} style={{ paddingTop: 12 }} /> Adicione seu
-        local de venda!
+      <Text
+        style={{
+          alignSelf: 'center',
+          paddingTop: 25,
+          paddingBottom: 25,
+          fontSize: 18,
+          fontWeight: 'bold',
+        }}>
+        Adicione seu local de venda!
       </Text>
       <MapView style={{ flex: 1 }} region={region.region}>
         {marker.coords ? (
           <Marker
             draggable={true}
             coordinate={marker.coords}
-            title={`Seu espaço será aqui?`}
+            title={`Seu espaço de venda é aqui?`}
             onDragEnd={(e) => {
               setMarker({ coords: e.nativeEvent.coordinate });
               changeRegion(e.nativeEvent.coordinate);
+              getLocation(e.nativeEvent.coordinate);
             }}></Marker>
         ) : null}
       </MapView>

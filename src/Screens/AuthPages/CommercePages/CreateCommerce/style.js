@@ -4,7 +4,9 @@ export const ScreenDescription = styled.Text`
   padding-top: 55px;
 `;
 
-export const ButtonDone = styled.TouchableOpacity`
+export const ButtonSubmit = styled.TouchableOpacity`
   position: absolute;
   bottom: 0;
+  background: red;
+  display: flex;
 `;

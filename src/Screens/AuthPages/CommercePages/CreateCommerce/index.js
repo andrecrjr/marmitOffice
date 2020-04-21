@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from 'react';
+import { Alert } from 'react-native';
 import Layout from 'components/Layout';
 import { useAuthFirebase } from 'components/hooks/useAuth';
 import firestore from '@react-native-firebase/firestore';
 import { GeoFirestore } from 'geofirestore';
 import FormInput from 'components/Input';
-import ButtonView from 'components/Button';
-import { ButtonDone } from './style';
+import ButtonView, { ButtonIcon } from 'components/Button';
 import { useForm } from 'react-hook-form';
 
 import MapCommerce from './MapCommerce';
 
 const geofirestore = new GeoFirestore(firestore());
 
-const CommerceSettings = ({ hasMenu }) => {
-  const { user, userData } = useAuthFirebase();
-  const { register, handleSubmit, errors, setValue } = useForm();
+const CommerceSettings = ({ navigation }) => {
+  const { user } = useAuthFirebase();
+  const { register, handleSubmit, setValue, errors } = useForm();
   const [isNotFreela, setCheckFreela] = useState(false);
-  const [firstPart, setFirstPartDone] = useState(true);
+  const [location, setLocation] = useState({});
+  const [firstPart, setFirstPartDone] = useState(false);
 
   const createGeoCommerce = (data) => {
     try {
@@ -27,9 +28,16 @@ const CommerceSettings = ({ hasMenu }) => {
           cpf: data.cpf || null,
           cnpj: data.cnpj || null,
           uid: user.uid,
-          coordinates: new firestore.GeoPoint(-23.0195, -43.4869),
+          coordinates: new firestore.GeoPoint(
+            location.latitude,
+            location.longitude,
+          ),
         })
         .then(() => {
+          Alert.alert(
+            'Pronto! Seu comércio foi cadastrado com sucesso no local na qual marcou!',
+          );
+          //navigation.navigate('FoodMenuToday');
           console.log('Commerce added!');
         });
     } catch (e) {
@@ -40,22 +48,29 @@ const CommerceSettings = ({ hasMenu }) => {
   const confirmData = (data) => {
     const { errors } = data;
     if (!errors) {
-      setNewUser(data);
+      //setNewUser(data);
       setFirstPartDone(true);
     }
+  };
+
+  const testCreate = (data) => {
+    console.log(data);
+    console.log(location);
   };
 
   useEffect(() => {
     register('displayName');
     register('cpf');
     register('cnpj');
+    () => {};
   }, [register]);
   return (
-    <Layout hasMenu={hasMenu}>
+    <Layout>
       {!firstPart ? (
         <>
           <FormInput
             styleWrap={{ paddingTop: 55 }}
+            iconName="assignment-ind"
             descriptionInput={'Digite o nome do seu comércio:'}
             nameInput={'Pensão da Tia Jujuba'}
             error={errors ? errors.password : null}
@@ -64,7 +79,7 @@ const CommerceSettings = ({ hasMenu }) => {
           <FormInput
             styleWrap={{ marginTop: 35 }}
             checkbox={true}
-            isChecked={isNotFreelancer}
+            isChecked={isNotFreela}
             onChange={() => {
               setCheckFreela(!isNotFreela);
             }}
@@ -88,14 +103,28 @@ const CommerceSettings = ({ hasMenu }) => {
             />
           )}
 
-          <ButtonView onPressFn={handleSubmit(confirmData)}>
-            Próximo >
-          </ButtonView>
+          <ButtonView onPressFn={handleSubmit(confirmData)}>Próximo</ButtonView>
         </>
       ) : (
         <>
-          <MapCommerce />
-          <ButtonDone></ButtonDone>
+          <MapCommerce getLocation={setLocation} />
+          <ButtonIcon
+            nameIcon={'done'}
+            style={{
+              width: 80,
+              height: 80,
+              backgroundColor: 'red',
+              position: 'absolute',
+              alignSelf: 'center',
+              bottom: 20,
+              borderRadius: 100,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            onPress={handleSubmit(testCreate)}
+            size={55}
+            color={'white'}
+          />
         </>
       )}
     </Layout>

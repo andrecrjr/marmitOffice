@@ -1,7 +1,14 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Dimensions } from 'react-native';
-import { Input, TextError, InputDescription, ContainerInput } from './styles';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import {
+  Input,
+  TextError,
+  InputDescription,
+  ContainerInput,
+  DescriptionContainer,
+} from './styles';
 import CheckBox from '@react-native-community/checkbox';
+Icon.loadFont();
 const FormInput = (
   {
     nameInput,
@@ -9,6 +16,7 @@ const FormInput = (
     onSubmitEditing,
     error,
     styleWrap,
+    iconName,
     descriptionInput,
     checkbox,
     onChange,
@@ -34,7 +42,10 @@ const FormInput = (
   return (
     <ContainerInput style={styleWrap}>
       {error ? <TextError>{error.message}</TextError> : null}
-      <InputDescription>{descriptionInput}</InputDescription>
+      <DescriptionContainer>
+        {iconName ? <Icon name={iconName} size={21} /> : null}
+        <InputDescription>{descriptionInput}</InputDescription>
+      </DescriptionContainer>
       <Input
         underlineColorAndroid={isFocused ? 'black' : error ? 'red' : 'black'}
         onFocus={handleFocus}

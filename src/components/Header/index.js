@@ -2,7 +2,7 @@ import React from 'react';
 import { UserAuth } from 'components/Layout/UserContext';
 import { displayName } from '../../../app.json';
 import { HeaderContainer, Logo } from './styles';
-import ButtonView from '../Button';
+import { ButtonIcon } from '../Button';
 import { useNavigation } from '@react-navigation/native';
 
 export default function Header() {
@@ -18,12 +18,13 @@ export default function Header() {
   return (
     <HeaderContainer>
       {user ? (
-        <ButtonView
-          header={true}
-          styles={{ paddingLeft: 10 }}
-          onPressFn={() => navigator.openDrawer()}>
-          Abrir
-        </ButtonView>
+        <ButtonIcon
+          nameIcon={'menu'}
+          style={{ paddingLeft: 10, alignSelf: 'center' }}
+          color={'white'}
+          size={28}
+          onPress={() => navigator.openDrawer()}
+        />
       ) : null}
 
       <Logo>{displayName}</Logo>

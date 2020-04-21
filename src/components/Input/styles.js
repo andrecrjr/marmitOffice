@@ -11,11 +11,6 @@ export const TextError = styled.TextInput`
   color: red;
 `;
 
-export const InputDescription = styled.Text`
-  font-size: 16px;
-  align-self: flex-start;
-`;
-
 export const ContainerInput = styled.View`
   display: flex;
   flex-direction: ${(props) => (props.checkbox ? `row` : `column`)};
@@ -23,4 +18,13 @@ export const ContainerInput = styled.View`
   align-self: center;
   width: ${(Dimensions.get('screen').width / 1.2).toFixed(0)}px;
   margin-top: 45px;
+`;
+
+export const DescriptionContainer = styled.View`
+  display: flex;
+  flex-direction: row;
+`;
+
+export const InputDescription = styled.Text`
+  align-self: center;
 `;
