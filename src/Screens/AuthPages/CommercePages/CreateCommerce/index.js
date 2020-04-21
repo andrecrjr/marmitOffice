@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import { Alert } from 'react-native';
 import Layout from 'components/Layout';
 import { useAuthFirebase } from 'components/hooks/useAuth';
@@ -7,6 +7,7 @@ import { GeoFirestore } from 'geofirestore';
 import FormInput from 'components/Input';
 import ButtonView, { ButtonIcon } from 'components/Button';
 import { useForm } from 'react-hook-form';
+import AddPicture from './AddPicture';
 
 import MapCommerce from './MapCommerce';
 
@@ -20,21 +21,24 @@ const reducerForm = (state, action) => {
       return { ...state, photo: { url_pic: action.payload } };
     case 'IS_FREELA':
       return { ...state, isFreela: action.payload };
+    case 'FIRST_PART_DONE':
+      return { ...state, firstPart: action.payload };
     default:
-      break;
+      return state;
   }
+};
+
+const initialState = {
+  geolocation: {},
+  photo: { url_pic: '' },
+  isFreela: false,
+  firstPart: false,
 };
 
 const CommerceSettings = ({ navigation }) => {
   const { user } = useAuthFirebase();
   const { register, handleSubmit, setValue, errors } = useForm();
-  const [dataForm, dispatchForm] = useReducer(reducerForm, {
-    geolocation: {},
-    photo: { url_pic: '' },
-    isFreela: false,
-  });
-  //const [location, setLocation] = useState({});
-  const [firstPart, setFirstPartDone] = useState(false);
+  const [dataForm, dispatchForm] = useReducer(reducerForm, initialState);
 
   const createGeoCommerce = (data) => {
     try {
@@ -65,8 +69,7 @@ const CommerceSettings = ({ navigation }) => {
   const confirmData = (data) => {
     const { errors } = data;
     if (!errors) {
-      //setNewUser(data);
-      setFirstPartDone(true);
+      dispatchForm({ type: 'FIRST_PART_DONE', payload: true });
     }
   };
 
@@ -83,7 +86,7 @@ const CommerceSettings = ({ navigation }) => {
   }, [register]);
   return (
     <Layout>
-      {!firstPart ? (
+      {!dataForm.firstPart ? (
         <>
           <FormInput
             styleWrap={{ paddingTop: 55 }}
@@ -112,16 +115,19 @@ const CommerceSettings = ({ navigation }) => {
             />
           ) : (
             <FormInput
-              styleWrap={{ marginTop: 35, paddingBottom: 5 }}
+              styleWrap={{ marginTop: 35 }}
               descriptionInput={'Digite seu CPF(sem pontos):'}
               nameInput={'1565489765'}
               error={errors ? errors.cpf : null}
               onChangeText={(text) => setValue('cpf', text)}
             />
           )}
-          {/* <AddPicture /> */}
-
-          <ButtonView onPressFn={handleSubmit(confirmData)}>Próximo</ButtonView>
+          <AddPicture style={{ marginTop: 35 }} />
+          <ButtonView
+            onPressFn={handleSubmit(confirmData)}
+            styles={{ marginTop: 25 }}>
+            Próximo
+          </ButtonView>
         </>
       ) : (
         <>
