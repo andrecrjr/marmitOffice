@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import { Alert } from 'react-native';
 import Layout from 'components/Layout';
 import { useAuthFirebase } from 'components/hooks/useAuth';
@@ -12,11 +12,28 @@ import MapCommerce from './MapCommerce';
 
 const geofirestore = new GeoFirestore(firestore());
 
+const reducerForm = (state, action) => {
+  switch (action.type) {
+    case 'ADD_GEOLOCATION':
+      return { ...state, geolocation: action.payload };
+    case 'ADD_PHOTO':
+      return { ...state, photo: { url_pic: action.payload } };
+    case 'IS_FREELA':
+      return { ...state, isFreela: action.payload };
+    default:
+      break;
+  }
+};
+
 const CommerceSettings = ({ navigation }) => {
   const { user } = useAuthFirebase();
   const { register, handleSubmit, setValue, errors } = useForm();
-  const [isNotFreela, setCheckFreela] = useState(false);
-  const [location, setLocation] = useState({});
+  const [dataForm, dispatchForm] = useReducer(reducerForm, {
+    geolocation: {},
+    photo: { url_pic: '' },
+    isFreela: false,
+  });
+  //const [location, setLocation] = useState({});
   const [firstPart, setFirstPartDone] = useState(false);
 
   const createGeoCommerce = (data) => {
@@ -55,7 +72,7 @@ const CommerceSettings = ({ navigation }) => {
 
   const testCreate = (data) => {
     console.log(data);
-    console.log(location);
+    console.log(dataForm);
   };
 
   useEffect(() => {
@@ -79,13 +96,13 @@ const CommerceSettings = ({ navigation }) => {
           <FormInput
             styleWrap={{ marginTop: 35 }}
             checkbox={true}
-            isChecked={isNotFreela}
+            isChecked={dataForm.isFreela}
             onChange={() => {
-              setCheckFreela(!isNotFreela);
+              dispatchForm({ type: 'IS_FREELA', payload: !dataForm.isFreela });
             }}
             descriptionInput={'Você é Pessoa Jurídica e tem CNPJ?'}
           />
-          {isNotFreela ? (
+          {dataForm.isFreela ? (
             <FormInput
               styleWrap={{ marginTop: 35, paddingBottom: 15 }}
               descriptionInput={'Digite seu CNPJ:'}
@@ -102,12 +119,13 @@ const CommerceSettings = ({ navigation }) => {
               onChangeText={(text) => setValue('cpf', text)}
             />
           )}
+          {/* <AddPicture /> */}
 
           <ButtonView onPressFn={handleSubmit(confirmData)}>Próximo</ButtonView>
         </>
       ) : (
         <>
-          <MapCommerce getLocation={setLocation} />
+          <MapCommerce getLocation={dispatchForm} />
           <ButtonIcon
             nameIcon={'done'}
             style={{

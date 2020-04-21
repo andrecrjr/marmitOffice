@@ -1,12 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Dimensions, Text, Platform } from 'react-native';
+import { Text, Platform } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import MapView, { Marker } from 'react-native-maps';
-import useGeolocation from 'components/hooks/useGeolocation';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import { GeoContext } from 'components/Contexts/LocationContext';
 
-Icon.loadFont();
 const MapCommerce = ({ getLocation }) => {
   // const geoloc = useGeolocation();
   const geoloc = useContext(GeoContext);
@@ -27,6 +24,10 @@ const MapCommerce = ({ getLocation }) => {
         latitude: geoloc.latitude,
         longitude: geoloc.longitude,
       },
+    });
+    getLocation({
+      type: 'ADD_GEOLOCATION',
+      payload: { latitude: geoloc.latitude, longitude: geoloc.longitude },
     });
     changeRegion(geoloc);
   }, [geoloc]);
@@ -62,7 +63,10 @@ const MapCommerce = ({ getLocation }) => {
             onDragEnd={(e) => {
               setMarker({ coords: e.nativeEvent.coordinate });
               changeRegion(e.nativeEvent.coordinate);
-              getLocation(e.nativeEvent.coordinate);
+              getLocation({
+                type: 'ADD_GEOLOCATION',
+                payload: e.nativeEvent.coordinate,
+              });
             }}></Marker>
         ) : null}
       </MapView>
