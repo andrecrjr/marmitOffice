@@ -5,7 +5,6 @@ import MapView, { Marker } from 'react-native-maps';
 import { GeoContext } from 'components/Contexts/LocationContext';
 
 const MapCommerce = ({ getLocation }) => {
-  // const geoloc = useGeolocation();
   const geoloc = useContext(GeoContext);
   const [marker, setMarker] = useState({});
 

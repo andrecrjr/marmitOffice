@@ -20,6 +20,7 @@ export const useAuthFirebase = () => {
     const subscribedUser = auth().onAuthStateChanged(authState);
     return subscribedUser;
   }, []);
+
   const userGetDatabase = useCallback(() => {
     const userFiredatabase = async () => {
       try {
@@ -34,14 +35,18 @@ export const useAuthFirebase = () => {
       }
     };
     if (user) {
-      userFiredatabase();
+      return userFiredatabase();
     }
   }, [user]);
 
   React.useEffect(() => {
     userFunction();
     userGetDatabase();
-  }, [userFunction, user, userGetDatabase]);
+    return () => {
+      userFunction();
+      userGetDatabase();
+    };
+  }, [user, userGetDatabase, userFunction]);
 
   return { user, authenticated, userData };
 };
