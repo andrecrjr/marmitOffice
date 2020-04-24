@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer } from 'react';
-import { Alert } from 'react-native';
+import { Alert, Text, Dimensions } from 'react-native';
 import Layout from 'components/Layout';
 import { useAuthFirebase } from 'components/hooks/useAuth';
 import firestore from '@react-native-firebase/firestore';
@@ -8,32 +8,11 @@ import FormInput from 'components/Input';
 import ButtonView, { ButtonIcon } from 'components/Button';
 import { useForm } from 'react-hook-form';
 import AddPicture from './AddPicture';
+import { reducerForm, initialState } from './reducerForm';
 
 import MapCommerce from './MapCommerce';
 
 const geofirestore = new GeoFirestore(firestore());
-
-const reducerForm = (state, action) => {
-  switch (action.type) {
-    case 'ADD_GEOLOCATION':
-      return { ...state, geolocation: action.payload };
-    case 'ADD_PHOTO':
-      return { ...state, photo: { url_pic: action.payload } };
-    case 'IS_FREELA':
-      return { ...state, isFreela: action.payload };
-    case 'FIRST_PART_DONE':
-      return { ...state, firstPart: action.payload };
-    default:
-      return state;
-  }
-};
-
-const initialState = {
-  geolocation: {},
-  photo: { url_pic: '' },
-  isFreela: false,
-  firstPart: false,
-};
 
 const CommerceSettings = ({ navigation }) => {
   const { user } = useAuthFirebase();
@@ -50,8 +29,8 @@ const CommerceSettings = ({ navigation }) => {
           cnpj: data.cnpj || null,
           uid: user.uid,
           coordinates: new firestore.GeoPoint(
-            location.latitude,
-            location.longitude,
+            dataForm.geolocation.latitude,
+            dataForm.geolocation.longitude,
           ),
         })
         .then(() => {
@@ -69,27 +48,27 @@ const CommerceSettings = ({ navigation }) => {
   const confirmData = (data) => {
     const { errors } = data;
     if (!errors) {
-      dispatchForm({ type: 'FIRST_PART_DONE', payload: true });
+      dispatchForm({ type: 'FIRST_STEP_CONTROL', payload: true });
     }
   };
 
   const testCreate = (data) => {
-    console.log(data);
-    console.log(dataForm);
+    console.log(Dimensions.get('window').width / 1.5);
   };
 
   useEffect(() => {
     register('displayName');
     register('cpf');
     register('cnpj');
-    () => {};
+    console.log(Dimensions.get('window').width / 1.4);
   }, [register]);
+
   return (
     <Layout>
       {!dataForm.firstPart ? (
         <>
           <FormInput
-            styleWrap={{ paddingTop: 55 }}
+            styleWrap={{ paddingTop: 45 }}
             iconName="assignment-ind"
             descriptionInput={'Digite o nome do seu comércio:'}
             nameInput={'Pensão da Tia Jujuba'}
@@ -107,7 +86,7 @@ const CommerceSettings = ({ navigation }) => {
           />
           {dataForm.isFreela ? (
             <FormInput
-              styleWrap={{ marginTop: 35, paddingBottom: 15 }}
+              styleWrap={{ marginTop: 35 }}
               descriptionInput={'Digite seu CNPJ:'}
               nameInput={'Pensão da Tia Jujuba'}
               error={errors ? errors.cnpj : null}
@@ -122,33 +101,24 @@ const CommerceSettings = ({ navigation }) => {
               onChangeText={(text) => setValue('cpf', text)}
             />
           )}
-          <AddPicture style={{ marginTop: 35 }} />
-          <ButtonView
-            onPressFn={handleSubmit(confirmData)}
-            styles={{ marginTop: 25 }}>
-            Próximo
-          </ButtonView>
+          <AddPicture
+            style={{ marginTop: 35 }}
+            getImageData={dispatchForm}
+            data={dataForm}
+          />
+          {!dataForm.geolocation.changed ? (
+            <ButtonView
+              onPressFn={handleSubmit(confirmData)}
+              styles={{ marginTop: 25 }}>
+              Próximo
+            </ButtonView>
+          ) : (
+            <Text>Local de venda marcado com sucesso!</Text>
+          )}
         </>
       ) : (
         <>
-          <MapCommerce getLocation={dispatchForm} />
-          <ButtonIcon
-            nameIcon={'done'}
-            style={{
-              width: 80,
-              height: 80,
-              backgroundColor: 'red',
-              position: 'absolute',
-              alignSelf: 'center',
-              bottom: 20,
-              borderRadius: 100,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-            onPress={handleSubmit(testCreate)}
-            size={55}
-            color={'white'}
-          />
+          <MapCommerce getLocation={dispatchForm} data={dataForm} />
         </>
       )}
     </Layout>

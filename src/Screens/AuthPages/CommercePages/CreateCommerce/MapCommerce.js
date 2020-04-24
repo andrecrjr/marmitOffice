@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Text, Platform } from 'react-native';
+import { ButtonIcon } from 'components/Button';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import MapView, { Marker } from 'react-native-maps';
 import { GeoContext } from 'components/Contexts/LocationContext';
@@ -26,7 +27,11 @@ const MapCommerce = ({ getLocation }) => {
     });
     getLocation({
       type: 'ADD_GEOLOCATION',
-      payload: { latitude: geoloc.latitude, longitude: geoloc.longitude },
+      payload: {
+        latitude: geoloc.latitude,
+        longitude: geoloc.longitude,
+        changed: true,
+      },
     });
     changeRegion(geoloc);
   }, [geoloc]);
@@ -64,12 +69,34 @@ const MapCommerce = ({ getLocation }) => {
               changeRegion(e.nativeEvent.coordinate);
               getLocation({
                 type: 'ADD_GEOLOCATION',
-                payload: e.nativeEvent.coordinate,
+                payload: { ...e.nativeEvent.coordinate, changed: true },
               });
             }}></Marker>
         ) : null}
       </MapView>
       <SearchMap getData={setRegion} setMarker={setMarker} />
+      <ButtonIcon
+        nameIcon={'done'}
+        style={{
+          width: 80,
+          height: 80,
+          backgroundColor: 'red',
+          position: 'absolute',
+          alignSelf: 'center',
+          bottom: 20,
+          borderRadius: 100,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+        onPress={() =>
+          getLocation({
+            type: 'FIRST_STEP_CONTROL',
+            payload: false,
+          })
+        }
+        size={55}
+        color={'white'}
+      />
     </>
   );
 };

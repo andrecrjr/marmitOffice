@@ -1,11 +1,10 @@
-import { ButtonIcon } from 'components/Button';
+import { ButtonIcon, Iconic } from 'components/Button';
 import ImagePicker from 'react-native-image-picker';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, Dimensions } from 'react-native';
 import React from 'react';
 import convertBlob from '../../helper';
 
-export default function AddPicture({ style }) {
-  const [photoPath, setImage] = React.useState();
+export default function AddPicture({ style, getImageData, data }) {
   const options = {
     title: 'Selecione foto para o estabelecimento',
     storageOptions: {
@@ -16,7 +15,6 @@ export default function AddPicture({ style }) {
   const getImage = async () => {
     try {
       ImagePicker.showImagePicker(options, (response) => {
-        console.log('Response = ', response);
         if (response.didCancel) {
           console.log('User cancelled image picker');
         } else if (response.error) {
@@ -26,9 +24,12 @@ export default function AddPicture({ style }) {
         } else {
           // You can also display the image using data:
           // const source = { uri: 'data:image/jpeg;base64,' + response.data };
-          setImage({
-            pathImage: response.uri,
-            uri: 'data:image/jpeg;base64,' + response.data,
+          getImageData({
+            type: 'ADD_PHOTO',
+            payload: {
+              pathImage: response.uri,
+              uri: 'data:image/jpeg;base64,' + response.data,
+            },
           });
         }
       });
@@ -36,12 +37,10 @@ export default function AddPicture({ style }) {
       console.log(e);
     }
   };
-  React.useEffect(() => {
-    console.log(photoPath);
-  }, [photoPath]);
+
   return (
-    <View style={[{ alignSelf: 'center' }, style]}>
-      <Text>Selecione uma seus clientes!</Text>
+    <View style={[{ alignSelf: 'center', justifyContent: 'center' }, style]}>
+      <Text>Selecione uma foto para seus clientes!</Text>
       <ButtonIcon
         nameIcon="photo-camera"
         size={30}
@@ -49,12 +48,31 @@ export default function AddPicture({ style }) {
         onPress={getImage}
         style={{ alignSelf: 'center' }}
       />
-      {photoPath ? (
-        <View style={{ paddingTop: 25 }}>
-          <Text>Selecionou uma bela foto! ;)</Text>
+      {data.pic.uri ? (
+        <View
+          style={{
+            paddingTop: 25,
+            flexDirection: 'row',
+            justifyContent: 'center',
+          }}>
           <Image
-            source={{ uri: photoPath.uri }}
-            style={{ width: 100, height: 100, alignSelf: 'center' }}
+            source={{ uri: data.pic.uri }}
+            style={{
+              width: 100,
+              height: 100,
+              alignSelf: 'center',
+              borderRadius: 18,
+            }}
+          />
+          <Iconic
+            nameIcon={'done'}
+            color={'green'}
+            size={60}
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              right: 45,
+            }}
           />
         </View>
       ) : null}

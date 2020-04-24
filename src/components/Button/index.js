@@ -30,3 +30,7 @@ export const ButtonIcon = ({ style, onPress, nameIcon, size = 22, color }) => {
     </TouchableOpacity>
   );
 };
+
+export const Iconic = ({ style, nameIcon, size = 22, color }) => {
+  return <Icon name={nameIcon} size={size} color={color} style={style} />;
+};
