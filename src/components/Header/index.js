@@ -17,17 +17,16 @@ export default function Header() {
 
   return (
     <HeaderContainer>
+      <Logo>{displayName}</Logo>
       {user ? (
         <ButtonIcon
           nameIcon={'menu'}
-          style={{ paddingLeft: 10, alignSelf: 'center' }}
+          style={{ paddingRight: 10, justifySelf: 'flex-start' }}
           color={'white'}
           size={28}
-          onPress={() => navigator.openDrawer()}
+          onPress={{}}
         />
       ) : null}
-
-      <Logo>{displayName}</Logo>
     </HeaderContainer>
   );
 }

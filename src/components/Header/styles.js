@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import { Dimensions } from 'react-native';
 
 export const HeaderContainer = styled.View`
   display: flex;
@@ -10,7 +11,9 @@ export const HeaderContainer = styled.View`
 
 export const Logo = styled.Text`
   font-family: 'Times New Roman';
-  align-self: center;
+  align-items: center;
   font-size: 25px;
   color: white;
+  flex-grow: 1;
+  text-align: center;
 `;
