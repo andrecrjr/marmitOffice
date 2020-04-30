@@ -8,11 +8,15 @@ export const useAuthFirebase = () => {
   const [userData, setDataUser] = useState({});
 
   const authState = (data) => {
-    setUser(data);
-    if (data) {
-      setAuth(true);
-    } else {
-      setAuth(false);
+    try {
+      setUser(data);
+      if (data) {
+        setAuth(true);
+      } else {
+        setAuth(false);
+      }
+    } catch (e) {
+      console.log(e);
     }
   };
 

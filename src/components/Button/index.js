@@ -12,7 +12,7 @@ export default function ButtonView({
   header,
 }) {
   return (
-    <Button style={styles} onPress={onPressFn}>
+    <Button style={[styles]} onPress={onPressFn}>
       <TextButton style={textStyle}>{children}</TextButton>
     </Button>
   );

@@ -1,11 +1,10 @@
 import React, { useEffect, useReducer } from 'react';
-import { Alert, Text, Dimensions } from 'react-native';
+import { Alert, Text, Dimensions, ScrollView } from 'react-native';
 import Layout from 'components/Layout';
-import { useAuthFirebase } from 'components/hooks/useAuth';
 import firestore from '@react-native-firebase/firestore';
 import { GeoFirestore } from 'geofirestore';
 import FormInput from 'components/Input';
-import ButtonView, { ButtonIcon } from 'components/Button';
+import ButtonView from 'components/Button';
 import { useForm } from 'react-hook-form';
 import AddPicture from './AddPicture';
 import { reducerForm, initialState } from './reducerForm';
@@ -14,32 +13,33 @@ import MapCommerce from './MapCommerce';
 
 const geofirestore = new GeoFirestore(firestore());
 
-const CommerceSettings = ({ navigation }) => {
-  const { user } = useAuthFirebase();
+const CommerceSettings = ({ user }) => {
   const { register, handleSubmit, setValue, errors } = useForm();
+
   const [dataForm, dispatchForm] = useReducer(reducerForm, initialState);
 
-  const createGeoCommerce = (data) => {
+  const createGeoCommerce = async (data) => {
     try {
       const geocollection = geofirestore.collection('GeoCommerceData');
-      geocollection
-        .add({
-          commerceName: data.displayName,
-          cpf: data.cpf || null,
-          cnpj: data.cnpj || null,
-          uid: user.uid,
-          coordinates: new firestore.GeoPoint(
-            dataForm.geolocation.latitude,
-            dataForm.geolocation.longitude,
-          ),
-        })
-        .then(() => {
-          Alert.alert(
-            'Pronto! Seu comércio foi cadastrado com sucesso no local na qual marcou!',
-          );
-          //navigation.navigate('FoodMenuToday');
-          console.log('Commerce added!');
-        });
+      const created = await geocollection.add({
+        commerceName: data.displayName,
+        cpf: data.cpf || null,
+        cnpj: data.cnpj || null,
+        uid: user.uid,
+        coordinates: new firestore.GeoPoint(
+          dataForm.geolocation.latitude,
+          dataForm.geolocation.longitude,
+        ),
+      });
+
+      if (created) {
+        Alert.alert(
+          'Pronto! Seu comércio foi cadastrado com sucesso no local na qual marcou!',
+        );
+      }
+
+      //navigation.navigate('FoodMenuToday');
+      console.log('Commerce added!');
     } catch (e) {
       console.log(e);
     }
@@ -52,10 +52,6 @@ const CommerceSettings = ({ navigation }) => {
     }
   };
 
-  const testCreate = (data) => {
-    console.log(Dimensions.get('window').width / 1.5);
-  };
-
   useEffect(() => {
     register('displayName');
     register('cpf');
@@ -66,7 +62,7 @@ const CommerceSettings = ({ navigation }) => {
   return (
     <Layout>
       {!dataForm.firstPart ? (
-        <>
+        <ScrollView>
           <FormInput
             styleWrap={{ paddingTop: 45 }}
             iconName="assignment-ind"
@@ -115,7 +111,7 @@ const CommerceSettings = ({ navigation }) => {
           ) : (
             <Text>Local de venda marcado com sucesso!</Text>
           )}
-        </>
+        </ScrollView>
       ) : (
         <>
           <MapCommerce getLocation={dispatchForm} data={dataForm} />

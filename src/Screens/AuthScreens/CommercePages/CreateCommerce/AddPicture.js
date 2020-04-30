@@ -42,7 +42,7 @@ export default function AddPicture({ style, getImageData, data }) {
     <View style={[{ alignSelf: 'center', justifyContent: 'center' }, style]}>
       <Text>Selecione uma foto para seus clientes!</Text>
       <ButtonIcon
-        nameIcon="photo-camera"
+        nameIcon="add-a-photo"
         size={30}
         color={'black'}
         onPress={getImage}

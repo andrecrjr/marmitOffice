@@ -34,8 +34,6 @@ const Signup = () => {
       if (error.code === 'auth/invalid-email') {
         Alert.alert('That email address is already in use!');
       }
-
-      console.error(error);
     }
   };
   useEffect(() => {

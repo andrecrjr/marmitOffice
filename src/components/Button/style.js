@@ -20,6 +20,7 @@ export const NearMeButton = styled.View`
 export const Button = styled.TouchableOpacity`
   align-self: center;
   height: 45px;
+  color: white;
   border-radius: 15px;
   width: ${Dimensions.get('screen').width / 1.2}px;
   background: #d50000;
