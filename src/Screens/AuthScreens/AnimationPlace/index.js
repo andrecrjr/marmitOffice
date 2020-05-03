@@ -1,6 +1,6 @@
 import React from 'react';
-import {View, Text, Animated} from 'react-native';
-import {PanGestureHandler, State} from 'react-native-gesture-handler';
+import { View, Text, Animated } from 'react-native';
+import { PanGestureHandler, State } from 'react-native-gesture-handler';
 
 const AnimatedTest = () => {
   const translateY = new Animated.Value(0);
@@ -14,12 +14,12 @@ const AnimatedTest = () => {
         },
       },
     ],
-    {useNativeDriver: true},
+    { useNativeDriver: true },
   );
   function onHandlerStateChange(event) {
     if (event.nativeEvent.oldState === State.ACTIVE) {
       let opened = false;
-      const {translationY} = event.nativeEvent;
+      const { translationY } = event.nativeEvent;
       offset += translationY;
       if (translationY >= 50) {
         opened = true;

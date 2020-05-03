@@ -21,10 +21,13 @@ export default function Settings({ navigation, route }) {
     };
   }, [navigation, userData, route]);
 
-  if (userData.commerceUser && route.params.firstTime) {
+  if (userData.commerceUser) {
     return (
       <>
-        <CommerceSettings user={userData} edit={true} />
+        <CommerceSettings
+          user={userData}
+          creatingCommerce={route.params.firstTime ? true : false}
+        />
       </>
     );
   }

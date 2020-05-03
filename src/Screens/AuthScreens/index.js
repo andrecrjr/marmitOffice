@@ -40,8 +40,9 @@ const UserPages = ({ navigation }) => {
             headerShown: false,
           }}>
           <UserStack.Screen
-            name="Settings"
+            name="SystemSettings"
             options={{
+              tabBarLabel: 'Settings',
               tabBarIcon: (props) => (
                 <Icon name="settings" color={props.color} size={25} />
               ),
@@ -86,7 +87,11 @@ const SystemTabs = () => (
     screenOptions={{
       headerShown: false,
     }}>
-    <SystemStack.Screen name="Settings" component={Settings} />
+    <SystemStack.Screen
+      name="Settings"
+      component={Settings}
+      initialParams={{ firstTime: false }}
+    />
     <SystemStack.Screen
       name="Logout"
       options={{

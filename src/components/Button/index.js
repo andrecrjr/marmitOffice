@@ -31,6 +31,10 @@ export const ButtonIcon = ({ style, onPress, nameIcon, size = 22, color }) => {
   );
 };
 
+export const IconView = ({ style, nameIcon, size = 16, color, iconStyle }) => {
+  return <Icon name={nameIcon} size={size} color={color} style={iconStyle} />;
+};
+
 export const Iconic = ({ style, nameIcon, size = 22, color }) => {
   return <Icon name={nameIcon} size={size} color={color} style={style} />;
 };
