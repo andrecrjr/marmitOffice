@@ -1,20 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Text, Alert } from 'react-native';
 import Layout from 'components/Layout';
 import ButtonView from 'components/Button';
 import { useAuthFirebase } from 'components/hooks/useAuth';
-import { UserAuth } from 'components/Layout/UserContext';
-
-const Authenticated = ({ navigation }) => {
+import { UserAuth } from 'components/Contexts/UserContext';
+const Authenticated = (props) => {
   const { user, userData } = React.useContext(UserAuth);
-
   const firstTime = () => {
-    console.log('bateu aqui');
-    navigation.push('User', {
+    props.navigation.navigate('Settings', {
       screen: 'Settings',
       params: { firstTime: true },
     });
   };
+
+  console.log(props);
 
   return (
     <Layout>

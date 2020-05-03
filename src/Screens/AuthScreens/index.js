@@ -1,18 +1,23 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
+
 import Authenticated from './ProfileUser';
 import StartScreenApp from '../StartScreen';
 import { ListCommerces } from './CommercePages/';
 import Settings from './Settings';
 import useGeolocation from 'components/hooks/useGeolocation';
-import { UserAuth } from 'components/Layout/UserContext';
 import { useAuthFirebase } from 'components/hooks/useAuth';
 import { GeoContext } from 'components/Contexts/LocationContext';
+import { UserAuth } from 'components/Contexts/UserContext';
+
 import NearIcon from 'components/Button/NearIcon';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 Icon.loadFont();
 
 const UserStack = createBottomTabNavigator();
+
+const SystemStack = createStackNavigator();
 
 const UserPages = ({ navigation }) => {
   const { user, userData, authenticated } = useAuthFirebase();
@@ -41,7 +46,8 @@ const UserPages = ({ navigation }) => {
                 <Icon name="settings" color={props.color} size={25} />
               ),
             }}
-            component={Settings}
+            initialParams={{ user: userData ? userData : 'nope' }}
+            component={SystemTabs}
           />
           <UserStack.Screen
             name="FindMe"
@@ -67,16 +73,29 @@ const UserPages = ({ navigation }) => {
               ),
             }}
           />
-          <UserStack.Screen
-            name="Logout"
-            options={{ tabBarLabel: '' }}
-            component={StartScreenApp}
-            initialParams={{ logout: true }}
-          />
+
           {/* <UserStack.Screen name="teste animation" component={AnimatedTest} /> */}
         </UserStack.Navigator>
       </GeoContext.Provider>
     </UserAuth.Provider>
   );
 };
+
+const SystemTabs = () => (
+  <SystemStack.Navigator
+    screenOptions={{
+      headerShown: false,
+    }}>
+    <SystemStack.Screen name="Settings" component={Settings} />
+    <SystemStack.Screen
+      name="Logout"
+      options={{
+        tabBarVisible: false,
+      }}
+      component={StartScreenApp}
+      initialParams={{ logout: true }}
+    />
+  </SystemStack.Navigator>
+);
+
 export default UserPages;

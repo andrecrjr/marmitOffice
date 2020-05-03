@@ -1,5 +1,5 @@
 import React from 'react';
-import { UserAuth } from 'components/Layout/UserContext';
+import { UserAuth } from 'components/Contexts/UserContext';
 import { displayName } from '../../../app.json';
 import { HeaderContainer, Logo } from './styles';
 import { ButtonIcon } from '../Button';

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Alert } from 'react-native';
 import Layout from 'components/Layout';
 import { Title } from '../style';
-import FormInput from 'components/Input';
+import FormInput, { ErrorInput } from 'components/Input';
 import ButtonView from 'components/Button';
 import { useForm } from 'react-hook-form';
 import firestore from '@react-native-firebase/firestore';
@@ -23,16 +23,17 @@ const Signup = () => {
           email: data.email,
           commerceUser: checked,
           id: newUser.user.uid,
+          commerceCreated: false,
         });
         return user;
       }
     } catch (error) {
       if (error.code === 'auth/email-already-in-use') {
-        Alert.alert('That email address is already in use!');
+        errors.auth = 'That email address is already in use!';
       }
 
       if (error.code === 'auth/invalid-email') {
-        Alert.alert('That email address is already in use!');
+        errors.auth = 'That email address is invalid!';
       }
     }
   };
@@ -55,6 +56,7 @@ const Signup = () => {
     <Layout>
       <View>
         <Title> Cadastre-se </Title>
+        {errors ? <ErrorInput>errors.auth</ErrorInput> : null} />
         <FormInput
           descriptionInput={'Digite seu nome e sobrenome:'}
           nameInput={'ex.:André Carlos'}

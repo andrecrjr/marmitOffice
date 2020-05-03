@@ -41,7 +41,7 @@ const FormInput = (
 
   return (
     <ContainerInput style={styleWrap}>
-      {error ? <TextError>{error.message}</TextError> : null}
+      {error ? <ErrorForm>{error.message}</ErrorForm> : null}
       <DescriptionContainer>
         {iconName ? <Icon name={iconName} size={21} /> : null}
         <InputDescription>{descriptionInput}</InputDescription>
@@ -57,3 +57,7 @@ const FormInput = (
 };
 
 export default FormInput;
+
+export const ErrorForm = ({ children }) => {
+  <TextError>{children}</TextError>;
+};
