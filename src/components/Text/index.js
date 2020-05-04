@@ -16,12 +16,14 @@ export const AlertItem = ({
   nameIcon,
   iconSize,
   iconStyle,
+  color,
 }) => {
   return (
     <AlertItemBox style={style}>
       <IconView
         nameIcon={nameIcon}
         size={iconSize}
+        color={color}
         iconStyle={[iconStyle, { alignSelf: 'center', paddingRight: 15 }]}
       />
       {children}

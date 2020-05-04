@@ -3,7 +3,6 @@ import { Text, Alert } from 'react-native';
 import { TextCenter, AlertBox, AlertItem } from 'components/Text';
 import Layout from 'components/Layout';
 import ButtonView, { IconView } from 'components/Button';
-import { useAuthFirebase } from 'components/hooks/useAuth';
 import { UserAuth } from 'components/Contexts/UserContext';
 
 const Authenticated = ({ navigation }) => {
@@ -18,18 +17,16 @@ const Authenticated = ({ navigation }) => {
   return (
     <Layout>
       <AlertBox>
-        <AlertItem nameIcon={`warning`} iconSize={20}>
-          <TextCenter style={{ fontSize: 18, marginRight: 10 }}>
+        <AlertItem nameIcon={`error`} iconSize={35} color={`red`}>
+          <TextCenter style={{ fontSize: 16 }}>
             Você é um comerciante e ainda não cadastrou seu espaço para seus
             clientes
           </TextCenter>
         </AlertItem>
         <ButtonView onPressFn={() => firstTime()}>
-          Cadastre seu espaço de venda!
+          Cadastre seu marmitOffice!
         </ButtonView>
       </AlertBox>
-
-      <Text>User authenticate {user ? user.email : ''}</Text>
     </Layout>
   );
 };

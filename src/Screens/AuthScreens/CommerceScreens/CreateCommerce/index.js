@@ -21,6 +21,7 @@ const CommerceSettings = ({ user }) => {
   const createGeoCommerce = async (data) => {
     try {
       const geocollection = geofirestore.collection('GeoCommerceData');
+      //const picCommerce = await
       const created = await geocollection.add({
         commerceName: data.displayName,
         cpf: data.cpf || null,
@@ -33,13 +34,13 @@ const CommerceSettings = ({ user }) => {
       });
 
       if (created) {
+        console.log('Commerce added!');
+
         Alert.alert(
           'Pronto! Seu comércio foi cadastrado com sucesso no local na qual marcou!',
         );
       }
-
       //navigation.navigate('FoodMenuToday');
-      console.log('Commerce added!');
     } catch (e) {
       console.log(e);
     }
@@ -66,8 +67,8 @@ const CommerceSettings = ({ user }) => {
           <FormInput
             styleWrap={{ paddingTop: 45 }}
             iconName="assignment-ind"
-            descriptionInput={'Digite o nome do seu comércio:'}
-            nameInput={'Pensão da Tia Jujuba'}
+            descriptionInput={'Qual o nome do seu comércio?'}
+            nameInput={'ex.:Pensão da Tia Jujuba'}
             error={errors ? errors.password : null}
             onChangeText={(text) => setValue('displayName', text)}
           />
@@ -83,15 +84,15 @@ const CommerceSettings = ({ user }) => {
           {dataForm.isFreela ? (
             <FormInput
               styleWrap={{ marginTop: 35 }}
-              descriptionInput={'Digite seu CNPJ:'}
-              nameInput={'Pensão da Tia Jujuba'}
+              descriptionInput={'Qual seu CNPJ?'}
+              nameInput={'56544878565'}
               error={errors ? errors.cnpj : null}
               onChangeText={(text) => setValue('cnpj', text)}
             />
           ) : (
             <FormInput
               styleWrap={{ marginTop: 35 }}
-              descriptionInput={'Digite seu CPF(sem pontos):'}
+              descriptionInput={'Qual seu CPF?'}
               nameInput={'1565489765'}
               error={errors ? errors.cpf : null}
               onChangeText={(text) => setValue('cpf', text)}

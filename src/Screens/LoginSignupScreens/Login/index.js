@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import { Title } from '../style';
 import Layout from 'components/Layout';
 import { useForm } from 'react-hook-form';
 import FormInput from 'components/Input';
-import ButtonView from 'components/Button';
+import ButtonView, { ErrorForm } from 'components/Button';
 import auth from '@react-native-firebase/auth';
 
 const LoginPage = ({ navigation }) => {
   const { register, handleSubmit, errors, setValue } = useForm();
-  const [errorSubmit, setError] = useState();
+  const [errorSubmit, setError] = useState('');
 
   useEffect(() => {
     register('email', {
@@ -30,11 +30,13 @@ const LoginPage = ({ navigation }) => {
 
   const signIn = async (data) => {
     try {
+      console.log(data);
       await auth().signInWithEmailAndPassword(data.email, data.password);
       navigation.navigate('User');
     } catch (error) {
+      console.log('DEU RUIM');
+      setError('Problem');
       console.log(error);
-      setError(error);
     }
   };
 
@@ -42,20 +44,21 @@ const LoginPage = ({ navigation }) => {
     <Layout>
       <View>
         <Title>Login</Title>
+        {errorSubmit ? <ErrorForm>{errorSubmit}</ErrorForm> : null}
         <FormInput
-          descriptionInput={'Digite seu e-mail de usuário:'}
+          descriptionInput={'Digite seu e-mail:'}
           nameInput={'email'}
           error={errors || errorSubmit ? errors.email || errorSubmit : null}
           onChangeText={(text) => setValue('email', text)}
         />
         <FormInput
-          descriptionInput={'Digite sua senha:'}
+          descriptionInput={'Password:'}
           nameInput={'password'}
           onChangeText={(text) => setValue('password', text)}
         />
       </View>
       <ButtonView
-        textStyle={{ color: 'white' }}
+        styles={{ marginTop: 35 }}
         onPressFn={handleSubmit(submitLogin)}>
         Login
       </ButtonView>

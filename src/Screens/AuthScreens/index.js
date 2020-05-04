@@ -4,12 +4,12 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import Authenticated from './ProfileUser';
 import StartScreenApp from '../StartScreen';
-import { ListCommerces } from './CommercePages/';
+import { ListCommerces } from './CommerceScreens/';
 import Settings from './Settings';
 import useGeolocation from 'components/hooks/useGeolocation';
 import { useAuthFirebase } from 'components/hooks/useAuth';
-import { GeoContext } from 'components/Contexts/LocationContext';
 import { UserAuth } from 'components/Contexts/UserContext';
+import { GeoContext } from 'components/Contexts/LocationContext';
 
 import NearIcon from 'components/Button/NearIcon';
 import Icon from 'react-native-vector-icons/MaterialIcons';

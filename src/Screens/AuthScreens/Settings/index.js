@@ -1,4 +1,4 @@
-import { CommerceSettings } from '../CommercePages/';
+import { CommerceSettings } from '../CommerceScreens/';
 import { UserAuth } from 'components/Contexts/UserContext';
 import { Text } from 'react-native';
 import React from 'react';

@@ -59,5 +59,14 @@ const FormInput = (
 export default FormInput;
 
 export const ErrorForm = ({ children }) => {
-  <TextError>{children}</TextError>;
+  console.log(children);
+  if (children !== '')
+    return (
+      <>
+        <TextError>
+          <Icon name="error" size={20} /> {children}
+        </TextError>
+      </>
+    );
+  return null;
 };

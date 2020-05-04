@@ -16,7 +16,7 @@ export const ContainerInput = styled.View`
   flex-direction: ${(props) => (props.checkbox ? `row` : `column`)};
   align-content: ${(props) => (props.checkbox ? `center` : `flex-start`)}
   align-self: center;
-  width: ${(Dimensions.get('screen').width / 1.2).toFixed(0)}px;
+  width: ${(Dimensions.get('screen').width / 1.4).toFixed(0)}px;
   margin-top: 45px;
 `;
 
@@ -27,4 +27,7 @@ export const DescriptionContainer = styled.View`
 
 export const InputDescription = styled.Text`
   align-self: center;
+  font-family: Roboto;
+  font-weight: bold;
+  font-size: 15px;
 `;

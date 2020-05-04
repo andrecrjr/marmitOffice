@@ -30,7 +30,9 @@ export const Button = styled.TouchableOpacity`
 `;
 
 export const TextButton = styled.Text`
-  font-size: 16px;
+  font-size: 14px;
+  color: white;
+  font-family: Roboto;
 `;
 
 export const MenuButton = styled.TouchableHighlight`
