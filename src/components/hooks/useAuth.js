@@ -1,11 +1,9 @@
 import React, { useCallback, useState } from 'react';
 import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
 
 export const useAuthFirebase = () => {
   const [user, setUser] = useState(null);
   const [authenticated, setAuth] = useState(false);
-  const [userData, setDataUser] = useState({});
 
   const authState = (data) => {
     try {
@@ -16,6 +14,7 @@ export const useAuthFirebase = () => {
         setAuth(false);
       }
     } catch (e) {
+      setAuth(false);
       console.log(e);
     }
   };
@@ -25,32 +24,9 @@ export const useAuthFirebase = () => {
     return subscribedUser;
   }, []);
 
-  const userGetDatabase = useCallback(() => {
-    const userFiredatabase = async () => {
-      try {
-        firestore()
-          .collection('Users')
-          .doc(user.uid)
-          .onSnapshot((documentSnapshot) =>
-            setDataUser(documentSnapshot.data()),
-          );
-      } catch (e) {
-        console.log(e);
-      }
-    };
-    if (user) {
-      return userFiredatabase();
-    }
-  }, [user]);
-
   React.useEffect(() => {
     userFunction();
-    userGetDatabase();
-    return () => {
-      userFunction();
-      userGetDatabase();
-    };
-  }, [user, userGetDatabase, userFunction]);
+  }, [user, userFunction, authenticated]);
 
-  return { user, authenticated, userData };
+  return { user, authenticated };
 };

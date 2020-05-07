@@ -20,5 +20,4 @@ export const AlertItemBox = styled.View`
   flex-direction: row;
   padding: 15px;
   flex-shrink: 1;
-  background: gray;
 `;

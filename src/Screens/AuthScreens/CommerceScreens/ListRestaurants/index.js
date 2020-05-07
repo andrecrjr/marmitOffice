@@ -9,6 +9,7 @@ import {
 } from 'geofirestore';
 import firestore from '@react-native-firebase/firestore';
 import { GeoContext } from 'components/Contexts/LocationContext';
+import useDatabase from 'components/hooks/useDatabase';
 
 const geofirestore = new GeoFirestore(firestore());
 const isHermes = () => global.HermesInternal !== null;
@@ -16,6 +17,7 @@ const isHermes = () => global.HermesInternal !== null;
 const ListCommerces = () => {
   console.log(isHermes());
   const geoloc = useContext(GeoContext);
+
   const [places, setPlaces] = useState([]);
   const [errors, setError] = useState([]);
 

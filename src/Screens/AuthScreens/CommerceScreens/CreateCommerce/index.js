@@ -8,6 +8,7 @@ import ButtonView from 'components/Button';
 import { useForm } from 'react-hook-form';
 import AddPicture from './AddPicture';
 import { reducerForm, initialState } from './reducerForm';
+import useDatabase from 'components/hooks/useDatabase';
 
 import MapCommerce from './MapCommerce';
 
@@ -53,11 +54,14 @@ const CommerceSettings = ({ user }) => {
     }
   };
 
+  const submitData = () => {
+    console.log(dataForm);
+  };
+
   useEffect(() => {
     register('displayName');
     register('cpf');
     register('cnpj');
-    console.log(Dimensions.get('window').width / 1.4);
   }, [register]);
 
   return (
@@ -66,8 +70,8 @@ const CommerceSettings = ({ user }) => {
         <ScrollView>
           <FormInput
             styleWrap={{ paddingTop: 45 }}
-            iconName="assignment-ind"
-            descriptionInput={'Qual o nome do seu comércio?'}
+            iconName="store-mall-directory"
+            descriptionInput={'Qual será o nome para seus clientes?'}
             nameInput={'ex.:Pensão da Tia Jujuba'}
             error={errors ? errors.password : null}
             onChangeText={(text) => setValue('displayName', text)}
@@ -84,16 +88,18 @@ const CommerceSettings = ({ user }) => {
           {dataForm.isFreela ? (
             <FormInput
               styleWrap={{ marginTop: 35 }}
-              descriptionInput={'Qual seu CNPJ?'}
-              nameInput={'56544878565'}
+              iconName="assignment-ind"
+              descriptionInput={'seu CNPJ:'}
+              nameInput={'123456789'}
               error={errors ? errors.cnpj : null}
               onChangeText={(text) => setValue('cnpj', text)}
             />
           ) : (
             <FormInput
               styleWrap={{ marginTop: 35 }}
-              descriptionInput={'Qual seu CPF?'}
-              nameInput={'1565489765'}
+              iconName="assignment-ind"
+              descriptionInput={'seu CPF:'}
+              nameInput={'123456789'}
               error={errors ? errors.cpf : null}
               onChangeText={(text) => setValue('cpf', text)}
             />
@@ -112,6 +118,9 @@ const CommerceSettings = ({ user }) => {
           ) : (
             <Text>Local de venda marcado com sucesso!</Text>
           )}
+          <ButtonView onPressFn={() => submitData()} styles={{ marginTop: 70 }}>
+            Criar meu marmitOffice!
+          </ButtonView>
         </ScrollView>
       ) : (
         <>

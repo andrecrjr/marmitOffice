@@ -10,6 +10,7 @@ import useGeolocation from 'components/hooks/useGeolocation';
 import { useAuthFirebase } from 'components/hooks/useAuth';
 import { UserAuth } from 'components/Contexts/UserContext';
 import { GeoContext } from 'components/Contexts/LocationContext';
+import { useDatabase } from 'components/hooks/useDatabase';
 
 import NearIcon from 'components/Button/NearIcon';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -20,10 +21,12 @@ const UserStack = createBottomTabNavigator();
 const SystemStack = createStackNavigator();
 
 const UserPages = ({ navigation }) => {
-  const { user, userData, authenticated } = useAuthFirebase();
+  const { user, authenticated } = useAuthFirebase();
+  const { userData } = useDatabase(user);
+
   const geoloc = useGeolocation();
   return (
-    <UserAuth.Provider value={{ user, userData, authenticated }}>
+    <UserAuth.Provider value={{ user, authenticated, userData }}>
       <GeoContext.Provider value={geoloc}>
         <UserStack.Navigator
           initialRouteName="Profile"
@@ -47,24 +50,25 @@ const UserPages = ({ navigation }) => {
                 <Icon name="settings" color={props.color} size={25} />
               ),
             }}
-            initialParams={{ user: userData ? userData : 'nope' }}
             component={SystemTabs}
           />
-          <UserStack.Screen
-            name="FindMe"
-            component={ListCommerces}
-            options={{
-              tabBarLabel: '',
-              tabBarIcon: (props) => (
-                <NearIcon
-                  {...props}
-                  name={'restaurant-menu'}
-                  title={'Procurar'}
-                  size={45}
-                />
-              ),
-            }}
-          />
+          {userData.commerceUser ? null : (
+            <UserStack.Screen
+              name="FindMe"
+              component={ListCommerces}
+              options={{
+                tabBarLabel: '',
+                tabBarIcon: (props) => (
+                  <NearIcon
+                    {...props}
+                    name={'restaurant-menu'}
+                    title={'Procurar'}
+                    size={45}
+                  />
+                ),
+              }}
+            />
+          )}
           <UserStack.Screen
             name="Profile"
             component={Authenticated}

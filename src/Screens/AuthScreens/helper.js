@@ -9,3 +9,10 @@ export async function convertBlob(sourceUrl) {
   // yay, let's print the result
   console.log(`Server said: ${JSON.stringify(fileBlob)}`);
 }
+
+export const generateBlob = (base64URL) => {
+  console.log(base64URL);
+  fetch(base64URL)
+    .then((response) => response.blob())
+    .then((response) => console.log('Your blob is' + response));
+};

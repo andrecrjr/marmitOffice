@@ -2,9 +2,10 @@ import { ButtonIcon, Iconic } from 'components/Button';
 import ImagePicker from 'react-native-image-picker';
 import { View, Text, Image, Dimensions } from 'react-native';
 import React from 'react';
-import convertBlob from '../../helper';
+import { generateBlob } from '../../helper';
 
 export default function AddPicture({ style, getImageData, data }) {
+  const [imgBase64, setImage64] = React.useState(null);
   const options = {
     title: 'Selecione foto para o estabelecimento',
     storageOptions: {
@@ -24,11 +25,12 @@ export default function AddPicture({ style, getImageData, data }) {
         } else {
           // You can also display the image using data:
           // const source = { uri: 'data:image/jpeg;base64,' + response.data };
+          setImage64('data:image/jpeg;base64,' + response.data);
+          generateBlob(response.data);
           getImageData({
             type: 'ADD_PHOTO',
             payload: {
               pathImage: response.uri,
-              uri: 'data:image/jpeg;base64,' + response.data,
             },
           });
         }
@@ -48,7 +50,7 @@ export default function AddPicture({ style, getImageData, data }) {
         onPress={getImage}
         style={{ alignSelf: 'center' }}
       />
-      {data.pic.uri ? (
+      {imgBase64 ? (
         <View
           style={{
             paddingTop: 25,
@@ -56,7 +58,7 @@ export default function AddPicture({ style, getImageData, data }) {
             justifyContent: 'center',
           }}>
           <Image
-            source={{ uri: data.pic.uri }}
+            source={{ uri: imgBase64 }}
             style={{
               width: 100,
               height: 100,

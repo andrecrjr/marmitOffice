@@ -3,8 +3,9 @@ import { View, Text } from 'react-native';
 import { Title } from '../style';
 import Layout from 'components/Layout';
 import { useForm } from 'react-hook-form';
-import FormInput from 'components/Input';
-import ButtonView, { ErrorForm } from 'components/Button';
+import FormInput, { ErrorForm } from 'components/Input';
+import { TextCenter, AlertBox, AlertItem } from 'components/Text';
+import ButtonView from 'components/Button';
 import auth from '@react-native-firebase/auth';
 
 const LoginPage = ({ navigation }) => {
@@ -34,8 +35,7 @@ const LoginPage = ({ navigation }) => {
       await auth().signInWithEmailAndPassword(data.email, data.password);
       navigation.navigate('User');
     } catch (error) {
-      console.log('DEU RUIM');
-      setError('Problem');
+      setError('Problema na validação, senha ou e-mail incorretos!');
       console.log(error);
     }
   };
@@ -44,16 +44,22 @@ const LoginPage = ({ navigation }) => {
     <Layout>
       <View>
         <Title>Login</Title>
-        {errorSubmit ? <ErrorForm>{errorSubmit}</ErrorForm> : null}
+        {errorSubmit !== '' ? (
+          <>
+            <AlertBox>
+              <AlertItem nameIcon={`error`} iconSize={35} color={`red`}>
+                <TextCenter style={{ fontSize: 16 }}>{errorSubmit}</TextCenter>
+              </AlertItem>
+            </AlertBox>
+          </>
+        ) : null}
         <FormInput
-          descriptionInput={'Digite seu e-mail:'}
-          nameInput={'email'}
-          error={errors || errorSubmit ? errors.email || errorSubmit : null}
+          nameInput={'email@email.com'}
+          error={errors ? errors.email : null}
           onChangeText={(text) => setValue('email', text)}
         />
         <FormInput
-          descriptionInput={'Password:'}
-          nameInput={'password'}
+          nameInput={'***************'}
           onChangeText={(text) => setValue('password', text)}
         />
       </View>

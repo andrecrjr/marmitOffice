@@ -8,6 +8,7 @@ import {
   DescriptionContainer,
 } from './styles';
 import CheckBox from '@react-native-community/checkbox';
+import { View } from 'react-native';
 Icon.loadFont();
 const FormInput = (
   {
@@ -59,14 +60,16 @@ const FormInput = (
 export default FormInput;
 
 export const ErrorForm = ({ children }) => {
-  console.log(children);
   if (children !== '')
     return (
-      <>
-        <TextError>
-          <Icon name="error" size={20} /> {children}
-        </TextError>
-      </>
+      <TextError>
+        <Icon
+          name="error"
+          size={20}
+          style={{ alignItems: 'center', paddingRight: 15 }}
+        />
+        {children}
+      </TextError>
     );
   return null;
 };

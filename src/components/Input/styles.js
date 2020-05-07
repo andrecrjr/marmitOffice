@@ -7,8 +7,9 @@ export const Input = styled.TextInput`
 `;
 
 export const TextError = styled.TextInput`
-  font-size: 15px;
+  font-size: 14px;
   color: red;
+  align-self: center;
 `;
 
 export const ContainerInput = styled.View`
@@ -17,7 +18,7 @@ export const ContainerInput = styled.View`
   align-content: ${(props) => (props.checkbox ? `center` : `flex-start`)}
   align-self: center;
   width: ${(Dimensions.get('screen').width / 1.4).toFixed(0)}px;
-  margin-top: 45px;
+  margin-top: 35px;
 `;
 
 export const DescriptionContainer = styled.View`

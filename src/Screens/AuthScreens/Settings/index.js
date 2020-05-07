@@ -3,12 +3,13 @@ import { UserAuth } from 'components/Contexts/UserContext';
 import { Text } from 'react-native';
 import React from 'react';
 import ButtonView from '../../../components/Button';
+import { useDatabase } from 'components/hooks/useDatabase';
 
 export default function Settings({ navigation, route }) {
   const { user, userData } = React.useContext(UserAuth);
+  // const { userData } = useDatabase(user);
 
   React.useEffect(() => {
-    console.log(route);
     if (route.params.firstTime) {
       navigation.dangerouslyGetParent().setOptions({
         tabBarVisible: false,
